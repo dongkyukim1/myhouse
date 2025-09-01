@@ -1,0 +1,48 @@
+Builder.io Dev Tools 설정 가이드
+========================================
+
+## 기본 명령어
+npx @builder.io/dev-tools@latest code --url vcp://quickcopy/vcp-1d64863e5d434e54aa55a5e09c5d2d4e
+
+## 사용 절차
+1. 위 명령어 실행
+2. 브라우저에서 Builder.io 인증 완료
+3. 디자인 통합 방법 설명 입력
+
+## 디자인 통합 설명 예시 (한국어)
+- "메인 페이지 디자인 업데이트"
+- "새로운 컴포넌트 추가"
+- "로그인 페이지 리디자인" 
+- "헤더 컴포넌트 개선"
+- "카드 컴포넌트 스타일 변경"
+- "레이아웃에 새로운 섹션 추가"
+- "랜딩 페이지 생성"
+- "대시보드 UI 업데이트"
+
+## 디자인 통합 설명 예시 (영어)
+- "add a new contact page"
+- "update the card component" 
+- "add a header to the layout of the app"
+- "create a new landing page"
+- "redesign the login form"
+- "add a sidebar component"
+- "update the dashboard layout"
+- "create a product card component"
+
+## 세션 정보
+- Session ID: 956052de-47d2-43b9-a858-ddb895320b98
+- Framework: Next.js
+- 인증: 완료됨
+
+## 피드백 링크
+https://docs.google.com/forms/d/e/1FAIpQLSdHUIxeNZCAeMTgAWehxBtZplgcqXqyPbGf9Z1Advnf2ARxGw/viewform?usp=pp_url&entry.986969459=956052de-47d2-43b9-a858-ddb895320b98&entry.1867678972=f0813a7d30754340a83b70c82e1f6447
+
+## 사용 팁
+- Figma 디자인을 먼저 준비
+- 구체적이고 명확한 설명 입력
+- 기존 컴포넌트와의 통합 고려
+- 반응형 디자인 요구사항 명시
+
+## 다음 실행 시
+같은 명령어로 다시 실행 가능
+인증은 한 번만 하면 됨

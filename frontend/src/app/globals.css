@@ -1,0 +1,498 @@
+/* SUIT 폰트 정의 */
+@font-face {
+    font-family: 'Suit';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Thin.woff2') format('woff2');
+    font-weight: 100;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Suit';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-ExtraLight.woff2') format('woff2');
+    font-weight: 200;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Suit';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Light.woff2') format('woff2');
+    font-weight: 300;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Suit';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Suit';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Medium.woff2') format('woff2');
+    font-weight: 500;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Suit';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-SemiBold.woff2') format('woff2');
+    font-weight: 600;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Suit';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Suit';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-ExtraBold.woff2') format('woff2');
+    font-weight: 800;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Suit';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Heavy.woff2') format('woff2');
+    font-weight: 900;
+    font-display: swap;
+}
+
+/* Pretendard 폰트 정의 (호환성 유지) */
+@font-face { font-family: 'Pretendard-Thin'; src: local('Pretendard Thin'); font-weight: 100; font-style: normal; }
+@font-face { font-family: 'Pretendard-ExtraLight'; src: local('Pretendard ExtraLight'); font-weight: 200; font-style: normal; }
+@font-face { font-family: 'Pretendard-Light'; src: local('Pretendard Light'); font-weight: 300; font-style: normal; }
+@font-face { font-family: 'Pretendard-Regular'; src: local('Pretendard Regular'); font-weight: 400; font-style: normal; }
+@font-face { font-family: 'Pretendard-Medium'; src: local('Pretendard Medium'); font-weight: 500; font-style: normal; }
+@font-face { font-family: 'Pretendard-SemiBold'; src: local('Pretendard SemiBold'); font-weight: 600; font-style: normal; }
+@font-face { font-family: 'Pretendard-Bold'; src: local('Pretendard Bold'); font-weight: 700; font-style: normal; }
+@font-face { font-family: 'Pretendard-ExtraBold'; src: local('Pretendard ExtraBold'); font-weight: 800; font-style: normal; }
+@font-face { font-family: 'Pretendard-Black'; src: local('Pretendard Black'); font-weight: 900; font-style: normal; }
+
+/* 구글 폰트 클래스 */
+.black-han-sans-regular { font-family: "Black Han Sans", sans-serif; font-weight: 400; font-style: normal; }
+.ibm-plex-sans-kr-regular { font-family: "IBM Plex Sans KR", sans-serif; font-weight: 400; font-style: normal; }
+
+html, body { 
+  margin: 0; 
+  padding: 0; 
+  background: #000; 
+  color: #eee; 
+  font-family: "Suit", "IBM Plex Sans KR", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  /* 성능 최적화 */
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+* { 
+  box-sizing: border-box; 
+}
+
+/* 성능 최적화 - 하드웨어 가속 */
+.will-change-transform {
+  will-change: transform;
+}
+
+.will-change-opacity {
+  will-change: opacity;
+}
+
+/* 스크롤 성능 최적화 */
+.scroll-container {
+  -webkit-overflow-scrolling: touch;
+  overflow-scrolling: touch;
+}
+
+/* 레이아웃 시프트 방지 */
+.prevent-layout-shift {
+  contain: layout style paint;
+}
+
+/* Next.js 페이지 전환 시 보라색 배경 제거 */
+html {
+  --progress-bar-color: transparent !important;
+}
+
+/* 브라우저 기본 로딩 인디케이터 숨김 */
+::-webkit-progress-bar {
+  background-color: transparent !important;
+}
+
+::-webkit-progress-value {
+  background-color: transparent !important;
+}
+
+/* 페이지 전환 시 깜빡임 방지 */
+body {
+  transition: none !important;
+}
+
+/* 일부 브라우저에서 나타나는 기본 로딩 색상 오버라이드 */
+::selection {
+  background: rgba(229, 9, 20, 0.3);
+}
+
+/* 커스텀 로딩 스피너 */
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(229, 9, 20, 0.2);
+  border-top: 3px solid #e50914;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* SweetAlert2 커스텀 스타일 */
+.swal-popup {
+  font-family: 'Pretendard-Regular', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+  border-radius: 16px !important;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15) !important;
+}
+
+.swal-title {
+  font-family: 'Pretendard-Bold', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+  font-size: 24px !important;
+  color: #333 !important;
+}
+
+.swal-confirm-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  border: none !important;
+  border-radius: 8px !important;
+  font-family: 'Pretendard-SemiBold', sans-serif !important;
+  font-size: 16px !important;
+  padding: 12px 24px !important;
+  transition: all 0.3s ease !important;
+}
+
+.swal-confirm-btn:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4) !important;
+}
+
+.swal-error-btn {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+  border: none !important;
+  border-radius: 8px !important;
+  font-family: 'Pretendard-SemiBold', sans-serif !important;
+  font-size: 16px !important;
+  padding: 12px 24px !important;
+  transition: all 0.3s ease !important;
+}
+
+.swal-error-btn:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4) !important;
+}
+
+.swal-cancel-btn {
+  background: #6b7280 !important;
+  border: none !important;
+  border-radius: 8px !important;
+  font-family: 'Pretendard-Medium', sans-serif !important;
+  font-size: 16px !important;
+  padding: 12px 24px !important;
+  transition: all 0.3s ease !important;
+}
+
+.swal-cancel-btn:hover {
+  background: #4b5563 !important;
+  transform: translateY(-1px) !important;
+}
+
+/* 스크롤바 최소화 */
+::-webkit-scrollbar { height: 8px; width: 8px; }
+::-webkit-scrollbar-thumb { background: #333; border-radius: 999px; }
+
+/* 컨테이너 유틸 */
+.container { max-width: 1280px; margin: 0 auto; padding: 0 20px; }
+
+/* 반응형 유틸리티 */
+@media (max-width: 1024px) {
+  .loan-calculator-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .hero {
+    grid-template-columns: 1fr !important;
+  }
+  .grid-gap {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 16px;
+  }
+  .hero {
+    height: 200px;
+  }
+  .sidebar {
+    position: static;
+    width: 100%;
+  }
+}
+
+/* 카드 호버 효과 */
+.card-hover { transition: transform .25s ease, box-shadow .25s ease; }
+.card-hover:hover { transform: scale(1.05); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+
+/* 대시보드 스타일 */
+.glass { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; backdrop-filter: blur(10px); }
+.gradient-violet { background: linear-gradient(135deg, rgba(148,0,211,0.18), rgba(59,130,246,0.18)); }
+.gradient-orange { background: linear-gradient(135deg, rgba(255,94,0,0.22), rgba(255,0,92,0.18)); }
+.subtle { color:#bbb }
+.badge { display:inline-flex; align-items:center; justify-content:center; padding:4px 8px; border-radius:999px; font-weight:700; font-size:11px; border:1px solid rgba(255,255,255,0.15); }
+.grid-gap { display:grid; gap:14px; }
+.sidebar { position:sticky; top:12px; align-self:flex-start; width:220px; }
+.hero { height: 260px; border-radius:16px; overflow:hidden; position:relative; }
+.hero-mask { position:absolute; inset:0; background:linear-gradient(90deg, rgba(0,0,0,.85) 0%, rgba(0,0,0,.1) 60%, rgba(0,0,0,0) 100%); }
+.button-primary { background:#e50914; color:#fff; border:0; padding:10px 16px; border-radius:10px; font-weight:800; cursor:pointer; }
+.input { background:#0f0f0f; border:1px solid #222; border-radius:10px; padding:10px 12px; color:#eee; }
+
+/* 비디오 카드 반응형 스타일 */
+.video-card .video-thumbnail {
+  height: 160px;
+}
+
+@media (max-width: 768px) {
+  .video-card .video-thumbnail {
+    height: 140px;
+  }
+  .carousel-item {
+    flex: 0 0 240px !important;
+    min-width: 240px !important;
+    height: 200px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .video-card .video-thumbnail {
+    height: 120px;
+  }
+  .carousel-item {
+    flex: 0 0 200px !important;
+    min-width: 200px !important;
+    height: 180px !important;
+  }
+}
+
+/* 영상 요약 페이지 반응형 */
+@media (max-width: 1200px) {
+  .summary-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .all-summaries-grid {
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)) !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .summary-page-header h1 {
+    font-size: 28px !important;
+  }
+  .summary-page-header p {
+    font-size: 16px !important;
+  }
+  .summary-card {
+    padding: 20px !important;
+    margin: 0 10px !important;
+  }
+  .summary-video-info {
+    flex-direction: column !important;
+    gap: 12px !important;
+  }
+  .summary-video-info img {
+    width: 100% !important;
+    height: 200px !important;
+  }
+  .all-summaries-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+  .stats-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .summary-page-header {
+    padding: 15px !important;
+  }
+  .summary-page-header h1 {
+    font-size: 24px !important;
+  }
+  .summary-page-header p {
+    font-size: 14px !important;
+  }
+  .summary-card {
+    padding: 16px !important;
+    margin: 0 5px !important;
+  }
+  .category-filters {
+    gap: 8px !important;
+  }
+  .category-filters button {
+    padding: 8px 16px !important;
+    font-size: 13px !important;
+  }
+  .stats-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+}
+
+/* 헤더 반응형 */
+@media (max-width: 768px) {
+  .header-nav {
+    display: none !important;
+  }
+  .header-buttons {
+    gap: 6px !important;
+  }
+  .header-buttons a {
+    padding: 6px 10px !important;
+    font-size: 12px !important;
+  }
+  .header-buttons .badge {
+    width: 18px !important;
+    height: 18px !important;
+    font-size: 10px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-container {
+    padding: 8px 12px !important;
+  }
+  .header-logo {
+    font-size: 22px !important;
+  }
+  .header-buttons a {
+    padding: 4px 8px !important;
+    font-size: 11px !important;
+  }
+}
+
+/* Entry (Landing/Auth) Screen Styles */
+.entry-screen { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; padding: 20px; z-index: 1000; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+.entry-container { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+.entry-card { background: #fff; border-radius: 24px; box-shadow: 0 25px 50px rgba(0,0,0,0.15); padding: 60px 40px; width: 100%; max-width: 480px; text-align: center; }
+.entry-head { margin-bottom: 48px; }
+.entry-logo { font-size: 48px; margin-bottom: 16px; }
+.entry-title { font-size: 36px; font-family: 'Pretendard-Bold'; color: #333; margin: 0 0 12px 0; }
+.entry-subtitle { font-size: 16px; font-family: 'Pretendard-Regular'; color: #666; margin: 0; line-height: 1.5; }
+.entry-actions { display: flex; flex-direction: column; gap: 16px; }
+.entry-btn-primary { width: 100%; padding: 16px 24px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; border: none; border-radius: 12px; font-size: 18px; font-family: 'Pretendard-SemiBold'; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4); }
+.entry-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6); }
+.entry-btn-outline { width: 100%; padding: 16px 24px; background: transparent; color: #667eea; border: 2px solid #667eea; border-radius: 12px; font-size: 18px; font-family: 'Pretendard-SemiBold'; cursor: pointer; transition: all 0.3s ease; }
+.entry-btn-outline:hover { background: #667eea; color: #fff; transform: translateY(-2px); box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3); }
+.entry-feature-panel { margin-top: 40px; padding: 20px; background: #f8f9fa; border-radius: 12px; }
+.entry-feature-title { font-size: 14px; font-family: 'Pretendard-Medium'; color: #666; margin-bottom: 8px; }
+.entry-feature-list { font-size: 12px; font-family: 'Pretendard-Regular'; color: #888; line-height: 1.4; }
+.entry-benefits { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 14px; margin-top: 24px; }
+.benefit-item { display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: #f8f9fa; border-radius: 12px; }
+.benefit-icon { width: 32px; height: 32px; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; background: linear-gradient(135deg, rgba(102,126,234,0.1) 0%, rgba(118,75,162,0.1) 100%); color: #667eea; font-size: 16px; }
+.benefit-text { font-size: 14px; color: #555; }
+.entry-meta { margin-top: 14px; font-size: 12px; color: #999; }
+@media (max-width: 520px) { .entry-benefits { grid-template-columns: 1fr; } }
+
+/* Loading State - Now using Lottie animations */
+.loading-animation-container {
+  user-select: none;
+  pointer-events: none;
+}
+
+/* Responsive loading animation */
+@media (max-width: 768px) {
+  .loading-animation-container {
+    transform: scale(0.8);
+  }
+}
+
+@media (max-width: 480px) {
+  .loading-animation-container {
+    transform: scale(0.7);
+  }
+}
+
+/* Entry Responsive */
+@media (max-width: 520px) {
+  .entry-card { padding: 32px 20px; border-radius: 20px; }
+  .entry-title { font-size: 28px; }
+  .entry-logo { font-size: 40px; }
+}
+
+/* Auth (Login) */
+.auth-container { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+.auth-card { background: #fff; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.12); width: 100%; max-width: 440px; padding: 48px 36px; }
+.auth-header { text-align: center; margin-bottom: 28px; }
+.auth-logo { font-size: 40px; margin-bottom: 8px; }
+.auth-title { font-size: 28px; font-family: 'Pretendard-Bold'; color: #333; margin: 0; }
+.auth-desc { font-size: 14px; color: #666; margin-top: 8px; }
+.auth-form { display: flex; flex-direction: column; gap: 18px; }
+.input-field { display: flex; flex-direction: column; gap: 8px; }
+.input-label { color: #333; font-size: 14px; font-family: 'Pretendard-Medium'; }
+.text-input { width: 100%; height: 48px; border: 2px solid #e1e5e9; border-radius: 10px; padding: 0 14px; font-size: 16px; font-family: 'Pretendard-Regular'; outline: none; transition: border-color .2s; }
+.text-input:focus { border-color: #667eea; }
+.error-banner { background: #fee; color: #c33; padding: 12px; border-radius: 10px; font-size: 14px; text-align: center; }
+.auth-primary-btn { width: 100%; height: 50px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; border: 0; border-radius: 12px; font-size: 16px; font-family: 'Pretendard-SemiBold'; cursor: pointer; transition: all .2s; box-shadow: 0 4px 12px rgba(102,126,234,.35); }
+.auth-primary-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(102,126,234,.55); }
+.auth-primary-btn.disabled { opacity: .5; cursor: not-allowed; box-shadow: none; transform: none; }
+.auth-alt { text-align: center; font-size: 14px; color: #666; margin-top: 8px; }
+.auth-link { background: none; border: none; color: #667eea; text-decoration: underline; cursor: pointer; font-size: 14px; font-family: 'Pretendard-Medium'; margin-left: 6px; }
+
+/* Register */
+.register-shell { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+.register-card { background: #fff; border-radius: 24px; width: 100%; max-width: 880px; box-shadow: 0 25px 50px rgba(0,0,0,0.15); overflow: hidden; }
+.register-head { padding: 36px 36px 0 36px; text-align: left; }
+.register-logo { font-size: 36px; }
+.register-title { font-size: 30px; font-family: 'Pretendard-Bold'; color: #333; margin: 8px 0 6px; }
+.register-desc { font-size: 14px; color: #666; margin: 0 0 10px; }
+.register-form { padding: 0 36px 36px 36px; display: flex; flex-direction: column; gap: 18px; }
+.form-row { display: grid; grid-template-columns: 1fr; gap: 16px; }
+.password-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.label-row { display: flex; justify-content: space-between; align-items: center; }
+.ghost-btn { background: none; border: none; color: #667eea; cursor: pointer; font-size: 14px; font-family: 'Pretendard-Medium'; }
+.requirements { display: grid; grid-template-columns: repeat(5, minmax(0,1fr)); gap: 10px; padding: 6px 0; }
+.req-item { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border-radius: 10px; background: #f7f7f8; color: rgba(102,102,102,0.85); }
+.req-item.met { background: #f0fff4; color: #16a34a; }
+.req-dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; opacity: .6; }
+.req-text { font-size: 13px; }
+.checkbox-item { display: flex; align-items: flex-start; gap: 10px; cursor: pointer; }
+.hidden-checkbox { display: none; }
+.checkbox-box { width: 22px; height: 22px; border-radius: 6px; border: 2px solid #ddd; display: inline-flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; background: #fff; color: #111; }
+.checkbox-text { color: #333; font-size: 14px; line-height: 1.5; }
+.link-btn { color: #111; text-decoration: underline; background: none; border: none; cursor: pointer; font-size: 14px; }
+.register-actions { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+.auth-primary-btn.wide { width: 100%; height: 56px; border-radius: 14px; font-size: 18px; }
+
+/* Responsive: keep original breakpoints */
+@media (max-width: 1200px) {
+  .register-card { max-width: 760px; }
+}
+@media (max-width: 768px) {
+  .auth-card { padding: 36px 20px; }
+  .password-grid { grid-template-columns: 1fr; }
+  .requirements { grid-template-columns: 1fr 1fr; }
+  .register-card { border-radius: 20px; }
+  .register-form { padding: 0 20px 24px 20px; }
+  .register-head { padding: 24px 20px 0 20px; }
+  .auth-primary-btn.wide { height: 52px; }
+}
+@media (max-width: 480px) {
+  .auth-title { font-size: 24px; }
+  .register-title { font-size: 26px; }
+  .requirements { grid-template-columns: 1fr; }
+}
