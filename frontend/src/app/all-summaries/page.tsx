@@ -68,10 +68,15 @@ export default function AllSummariesPage() {
       setVideos(data.items || []);
       
       // 영상들의 요약을 순차적으로 로드
+      console.log('API 응답 데이터:', data);
+      console.log('영상 개수:', data.items?.length || 0);
+      
       if (data.items && data.items.length > 0) {
+        console.log('영상 목록 로딩 시작:', data.items.length, '개');
         await loadAllSummaries(data.items);
       } else {
         const errorMessage = "영상을 찾을 수 없습니다. YouTube 채널을 확인해주세요.";
+        console.error('영상 목록이 비어있음:', data);
         setError(errorMessage);
         
         await Swal.fire({
@@ -109,30 +114,84 @@ export default function AllSummariesPage() {
 
   async function loadAllSummaries(videoList: Video[]) {
     const summaryResults: VideoSummary[] = [];
-    const total = Math.min(videoList.length, 10); // 최대 10개만 로드 (할당량 절약)
+    const total = Math.min(videoList.length, 20); // 최대 20개로 증가
+    
+    console.log(`전체 영상 요약 로딩 시작: ${total}개 영상`);
     
     for (let i = 0; i < total; i++) {
       const video = videoList[i];
       try {
+        console.log(`영상 ${i + 1}/${total} 요약 로딩 중: ${video.title}`);
+        
         const response = await fetch(`/api/video-summary?videoId=${video.videoId}`);
+        
+        if (!response.ok) {
+          const errorData = await response.json();
+          console.error(`영상 ${video.videoId} 요약 로딩 실패:`, errorData);
+          
+          // 할당량 초과인 경우 중단
+          if (errorData.code === "QUOTA_EXCEEDED" || response.status === 429) {
+            console.log('YouTube API 할당량 초과로 인한 중단');
+            break;
+          }
+          continue;
+        }
+        
         const summaryData = await response.json();
         
-        if (response.ok && summaryData.video) {
+        console.log(`영상 ${video.videoId} API 응답:`, summaryData);
+        console.log(`영상 ${video.videoId} 응답 키들:`, Object.keys(summaryData || {}));
+        console.log(`영상 ${video.videoId} has video:`, !!summaryData?.video);
+        console.log(`영상 ${video.videoId} has summary:`, !!summaryData?.summary);
+        
+        if (summaryData && (summaryData.video || summaryData.summary)) {
+          console.log(`영상 ${video.videoId} 요약 완료`);
+          
+          // video 데이터가 없으면 기본 데이터로 구성
+          const videoData = summaryData.video || {
+            videoId: video.videoId,
+            title: video.title,
+            description: video.description,
+            publishedAt: video.publishedAt,
+            duration: "정보 없음",
+            viewCount: "0",
+            likeCount: "0",
+            thumbnails: video.thumbnails
+          };
+          
           summaryResults.push({
             videoId: video.videoId,
-            summary: summaryData.summary,
-            keywords: summaryData.keywords,
-            category: summaryData.category,
-            video: summaryData.video
+            summary: summaryData.summary || '요약 정보를 생성할 수 없습니다.',
+            keywords: summaryData.keywords || [],
+            category: summaryData.category || '일반',
+            video: videoData
           });
+          
+          console.log(`요약 추가 성공 - 현재 총 ${summaryResults.length}개`);
+        } else {
+          console.warn(`영상 ${video.videoId} 요약 데이터가 부족함:`, summaryData);
         }
       } catch (error) {
-        console.error(`Failed to load summary for ${video.videoId}:`, error);
+        console.error(`영상 ${video.videoId} 요약 로딩 중 에러:`, error);
+        // 개별 영상 실패는 전체 프로세스를 중단하지 않음
       }
       
-      setLoadingProgress(Math.round(((i + 1) / total) * 100));
+      // 진행률 업데이트
+      const progress = Math.round(((i + 1) / total) * 100);
+      setLoadingProgress(progress);
+      
+      // 상태 업데이트 전에 로그 찍기
+      console.log(`진행률 ${progress}% - 현재까지 ${summaryResults.length}개 요약 완료`);
       setSummaries([...summaryResults]);
+      
+      // 서버 부하 방지를 위한 약간의 지연
+      if (i < total - 1) {
+        await new Promise(resolve => setTimeout(resolve, 500));
+      }
     }
+    
+    console.log(`전체 영상 요약 로딩 완료: ${summaryResults.length}개 성공`);
+    console.log('최종 summaryResults:', summaryResults);
   }
 
   const filteredSummaries = summaries.filter(summary => {
@@ -151,6 +210,13 @@ export default function AllSummariesPage() {
       summary.keywords.some(keyword => keyword.includes(cat))
     );
   });
+
+  // 렌더링 시 상태 로그
+  console.log('현재 렌더링 상태:');
+  console.log('- loading:', loading);
+  console.log('- summaries 개수:', summaries.length);
+  console.log('- filteredSummaries 개수:', filteredSummaries.length);
+  console.log('- error:', error);
 
   function formatDuration(duration: string): string {
     const match = duration.match(/PT(\d+H)?(\d+M)?(\d+S)?/);
@@ -244,32 +310,69 @@ export default function AllSummariesPage() {
           padding: "60px 20px",
           backgroundColor: "#f8f9fa",
           borderRadius: "12px",
-          marginBottom: "30px"
+          marginBottom: "30px",
+          border: "1px solid #e0e0e0"
         }}>
           <InlineLoading 
-            text="영상들을 분석하고 있습니다..." 
+            text="영상들을 AI로 분석하고 있습니다..." 
             size={100}
           />
           <div style={{
             width: "100%",
-            maxWidth: "400px",
-            height: "8px",
+            maxWidth: "500px",
+            height: "12px",
             backgroundColor: "#e0e0e0",
-            borderRadius: "4px",
-            margin: "20px auto 10px",
-            overflow: "hidden"
+            borderRadius: "6px",
+            margin: "25px auto 15px",
+            overflow: "hidden",
+            boxShadow: "inset 0 1px 3px rgba(0,0,0,0.1)"
           }}>
             <div style={{
               height: "100%",
-              backgroundColor: "#007bff",
-              borderRadius: "4px",
+              background: "linear-gradient(90deg, #007bff 0%, #0056b3 100%)",
+              borderRadius: "6px",
               width: `${loadingProgress}%`,
-              transition: "width 0.3s ease"
-            }} />
+              transition: "width 0.5s ease",
+              position: "relative",
+              overflow: "hidden"
+            }}>
+              <div style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                background: "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%)",
+                animation: "shimmer 2s infinite linear"
+              }} />
+            </div>
           </div>
-          <div style={{ fontSize: "14px", color: "#666" }}>
-            {loadingProgress}% 완료 ({summaries.length}개 영상 분석됨)
+          <div style={{ 
+            fontSize: "16px", 
+            color: "#333",
+            fontFamily: "Pretendard-Medium",
+            marginBottom: "8px"
+          }}>
+            {loadingProgress}% 완료
           </div>
+          <div style={{ 
+            fontSize: "14px", 
+            color: "#666" 
+          }}>
+            {summaries.length}개 영상 분석 완료 • YouTube API로 실시간 처리 중
+          </div>
+          {summaries.length > 0 && (
+            <div style={{
+              marginTop: "20px",
+              padding: "12px",
+              backgroundColor: "#e8f4fd",
+              borderRadius: "8px",
+              fontSize: "13px",
+              color: "#0066cc"
+            }}>
+              💡 분석된 영상들은 아래에서 실시간으로 확인하실 수 있습니다
+            </div>
+          )}
         </div>
       )}
 
@@ -278,14 +381,49 @@ export default function AllSummariesPage() {
         <div style={{ 
           textAlign: "center", 
           padding: "60px 20px",
-          fontSize: "18px",
-          color: "#f55",
           backgroundColor: "#fff5f5",
           borderRadius: "12px",
           border: "1px solid #fecaca",
           marginBottom: "30px"
         }}>
-          {error}
+          <div style={{ fontSize: "48px", marginBottom: "16px" }}>⚠️</div>
+          <div style={{ 
+            fontSize: "18px",
+            color: "#dc2626",
+            fontFamily: "Pretendard-SemiBold",
+            marginBottom: "12px"
+          }}>
+            영상 로딩 중 문제가 발생했습니다
+          </div>
+          <div style={{ 
+            fontSize: "14px",
+            color: "#666",
+            marginBottom: "20px",
+            lineHeight: "1.6"
+          }}>
+            {error}
+          </div>
+          <button
+            onClick={() => {
+              setError(null);
+              loadVideos();
+            }}
+            style={{
+              padding: "12px 24px",
+              backgroundColor: "#dc2626",
+              color: "#fff",
+              border: "none",
+              borderRadius: "8px",
+              fontSize: "14px",
+              fontFamily: "Pretendard-Medium",
+              cursor: "pointer",
+              transition: "background-color 0.2s"
+            }}
+            onMouseOver={(e) => e.currentTarget.style.backgroundColor = "#b91c1c"}
+            onMouseOut={(e) => e.currentTarget.style.backgroundColor = "#dc2626"}
+          >
+            🔄 다시 시도
+          </button>
         </div>
       )}
 
@@ -532,6 +670,14 @@ export default function AllSummariesPage() {
           </div>
         </div>
       )}
+
+      {/* CSS 애니메이션 추가 */}
+      <style jsx>{`
+        @keyframes shimmer {
+          0% { transform: translateX(-100%); }
+          100% { transform: translateX(400%); }
+        }
+      `}</style>
     </main>
     </AuthGuard>
   );

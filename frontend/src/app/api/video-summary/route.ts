@@ -19,15 +19,20 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    // 1. DB 캐시에서 요약 확인
+    // 1. DB 캐시에서 요약 확인 (완전한 데이터만 사용)
     const cachedSummary = await getCachedVideoSummary(videoId);
     
-    if (cachedSummary) {
-      console.log('DB 캐시에서 요약 데이터 반환:', videoId);
+    if (cachedSummary && cachedSummary.summaryData && 
+        cachedSummary.summaryData.summary && 
+        cachedSummary.summaryData.video) {
+      console.log('DB 캐시에서 완전한 요약 데이터 반환:', videoId);
       return NextResponse.json({
         ...cachedSummary.summaryData,
         source: 'database_cache'
       });
+    } else if (cachedSummary) {
+      console.log('DB 캐시에 불완전한 데이터 발견, 새로 생성:', videoId, 
+        'keys:', Object.keys(cachedSummary.summaryData || {}));
     }
 
     // 2. 메모리 캐시 확인 (기존 로직 유지)
@@ -50,15 +55,37 @@ export async function GET(req: NextRequest) {
     const videoResponse = await fetch(
       `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&id=${videoId}&key=${apiKey}`
     );
+    
+    if (!videoResponse.ok) {
+      const errorData = await videoResponse.json();
+      console.error('YouTube API 비디오 조회 실패:', errorData);
+      
+      if (errorData.error?.code === 403 && errorData.error?.errors?.[0]?.reason === 'quotaExceeded') {
+        return NextResponse.json(
+          { code: "QUOTA_EXCEEDED", message: "YouTube API 할당량이 초과되었습니다" },
+          { status: 429 }
+        );
+      }
+      
+      return NextResponse.json(
+        { code: "YOUTUBE_API_ERROR", message: errorData.error?.message || "YouTube API 호출 실패" },
+        { status: videoResponse.status }
+      );
+    }
+    
     const videoData = await videoResponse.json();
     const video = videoData?.items?.[0];
 
     if (!video) {
+      console.log(`영상을 찾을 수 없음: ${videoId}`);
       return NextResponse.json(
         { code: "VIDEO_NOT_FOUND", message: "영상을 찾을 수 없습니다" },
         { status: 404 }
       );
     }
+
+    console.log(`영상 정보 조회 성공: ${video.snippet?.title}`);
+  
 
     // 영상 기본 정보
     const videoInfo = {
@@ -73,13 +100,19 @@ export async function GET(req: NextRequest) {
     };
 
     // 자막 정보 가져오기 (자막이 있는 경우)
-    let captions = null;
+    let captions = [];
     try {
       const captionResponse = await fetch(
         `https://www.googleapis.com/youtube/v3/captions?part=snippet&videoId=${videoId}&key=${apiKey}`
       );
-      const captionData = await captionResponse.json();
-      captions = captionData?.items || [];
+      
+      if (captionResponse.ok) {
+        const captionData = await captionResponse.json();
+        captions = captionData?.items || [];
+        console.log(`자막 정보 조회 성공: ${captions.length}개`);
+      } else {
+        console.log("자막 정보 조회 실패 (일반적으로 정상)");
+      }
     } catch (error) {
       console.log("자막 정보 가져오기 실패:", error);
     }
@@ -100,7 +133,13 @@ export async function GET(req: NextRequest) {
       category,
       captions: captions?.length > 0 ? captions.length : 0,
       hasSubtitles: captions?.length > 0,
+      source: 'generated'
     };
+
+    console.log(`영상 요약 생성 완료: ${videoInfo.title}`);
+    console.log(`- 요약: ${summary.substring(0, 100)}...`);
+    console.log(`- 키워드: ${keywords.join(', ')}`);
+    console.log(`- 카테고리: ${category}`);
 
     // 3. 메모리 캐시에 저장 (기존 로직 유지)
     apiCache.set(cacheKey, result, 30 * 60 * 1000);
