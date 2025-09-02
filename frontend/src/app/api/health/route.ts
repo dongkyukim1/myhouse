@@ -4,7 +4,7 @@ export const dynamic = 'force-dynamic';
 
 export async function GET() {
   try {
-    const envStatus = {
+    const envStatus: any = {
       timestamp: new Date().toISOString(),
       environment: 'production',
       status: 'healthy',
