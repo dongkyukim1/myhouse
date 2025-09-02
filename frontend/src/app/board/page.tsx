@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import AuthGuard from "@/components/AuthGuard";
+import { BannerAd, SquareAd } from "@/components/GoogleAdsense";
 import Link from "next/link";
 import Swal from 'sweetalert2';
 
@@ -214,6 +215,9 @@ export default function BoardPage() {
           </div>
         </div>
 
+        {/* 상단 배너 광고 */}
+        <BannerAd style={{ margin: '20px 0' }} />
+
         <div style={{ 
           display: 'grid', 
           gridTemplateColumns: isMobile ? '1fr' : '250px 1fr', 
@@ -282,6 +286,13 @@ export default function BoardPage() {
                 </button>
               ))}
             </div>
+
+            {/* 사이드바 광고 */}
+            {!isMobile && (
+              <div style={{ marginTop: '20px' }}>
+                <SquareAd />
+              </div>
+            )}
           </aside>
 
           {/* 게시글 목록 */}

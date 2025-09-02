@@ -2,6 +2,7 @@
 
 import React, { useEffect, useMemo, useState } from "react";
 import AuthGuard from "@/components/AuthGuard";
+import { BannerAd } from "@/components/GoogleAdsense";
 import Swal from 'sweetalert2';
 
 export default function MyInfoPage() {

@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import AuthGuard from "@/components/AuthGuard";
+import { BannerAd, ResponsiveAd } from "@/components/GoogleAdsense";
 import { formatPrice, formatChange, getChangeColor } from "@/lib/finnhub";
 import Swal from 'sweetalert2';
 import Link from 'next/link';
@@ -520,6 +521,9 @@ export default function StocksPage() {
           </div>
         </div>
 
+        {/* 상단 배너 광고 */}
+        <BannerAd style={{ margin: '20px 0' }} />
+
         <div style={{ 
           display: 'grid', 
           gridTemplateColumns: isMobile ? '1fr' : '2fr 1fr', 
@@ -574,6 +578,9 @@ export default function StocksPage() {
                 </div>
               )}
             </div>
+
+            {/* 주식 목록 하단 광고 */}
+            <ResponsiveAd style={{ margin: '30px 0' }} />
           </div>
 
           {/* 뉴스 영역 */}

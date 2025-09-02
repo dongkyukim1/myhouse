@@ -7,6 +7,7 @@ import VideoCard from "@/components/VideoCard";
 import Hero from "@/components/Hero";
 import Chips from "@/components/Chips";
 import AuthGuard from "@/components/AuthGuard";
+import { BannerAd, InFeedAd } from "@/components/GoogleAdsense";
 import Swal from 'sweetalert2';
 
 type Video = {
@@ -158,6 +159,9 @@ export default function HomePage() {
 
         <Chips items={CATEGORIES} value={category} onChange={setCategory} />
 
+        {/* 상단 배너 광고 */}
+        <BannerAd style={{ margin: '20px 0' }} />
+
         {loading && <div>로딩 중...</div>}
         {error && <div style={{ color: "#f55" }}>{error}</div>}
 
@@ -173,6 +177,9 @@ export default function HomePage() {
             />
           ))}
         </CarouselRow>
+
+        {/* 하단 인피드 광고 */}
+        <InFeedAd style={{ margin: '30px 0' }} />
       </main>
     </AuthGuard>
   );
