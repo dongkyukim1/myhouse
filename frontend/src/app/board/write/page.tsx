@@ -5,6 +5,7 @@ import AuthGuard from "@/components/AuthGuard";
 import { useRouter } from "next/navigation";
 import Swal from 'sweetalert2';
 import dynamic from 'next/dynamic';
+import 'react-quill/dist/quill.snow.css';
 
 // ReactQuill을 동적으로 import (SSR 문제 해결)
 const ReactQuill = dynamic(() => import('react-quill'), { 
@@ -327,7 +328,8 @@ export default function WritePage() {
               <div style={{ 
                 background: '#fff',
                 borderRadius: '8px',
-                overflow: 'hidden'
+                overflow: 'hidden',
+                minHeight: '450px'
               }}>
                 <ReactQuill
                   value={content}
@@ -335,12 +337,33 @@ export default function WritePage() {
                   modules={quillModules}
                   formats={quillFormats}
                   style={{
-                    height: '400px',
-                    marginBottom: '42px'
+                    height: '400px'
                   }}
                   placeholder="게시글 내용을 작성하세요..."
+                  theme="snow"
                 />
               </div>
+              
+              <style jsx global>{`
+                .ql-editor {
+                  min-height: 300px !important;
+                  font-size: 16px !important;
+                  line-height: 1.6 !important;
+                  color: #333 !important;
+                }
+                .ql-toolbar {
+                  border-top: none !important;
+                  border-left: none !important;
+                  border-right: none !important;
+                  border-bottom: 1px solid #e0e0e0 !important;
+                }
+                .ql-container {
+                  border-bottom: none !important;
+                  border-left: none !important;
+                  border-right: none !important;
+                  font-family: 'Pretendard-Regular', sans-serif !important;
+                }
+              `}</style>
             </div>
 
             {/* 태그 */}
