@@ -14,8 +14,7 @@ function getPool(): Pool {
       connectionString, 
       max: 5,
       ssl: process.env.NODE_ENV === 'production' ? { 
-        rejectUnauthorized: false,
-        sslmode: 'require'
+        rejectUnauthorized: false
       } : false
     });
   }
