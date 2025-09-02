@@ -39,7 +39,22 @@ export async function POST() {
 async function createTables() {
   console.log('📋 테이블 생성 중...');
 
-  // 사용자 테이블
+  // 기존 테이블들을 모두 삭제 (외래키 제약조건 문제 해결)
+  await query(`DROP TABLE IF EXISTS board_attachments CASCADE;`);
+  await query(`DROP TABLE IF EXISTS board_post_likes CASCADE;`);
+  await query(`DROP TABLE IF EXISTS board_comments CASCADE;`);
+  await query(`DROP TABLE IF EXISTS board_posts CASCADE;`);
+  await query(`DROP TABLE IF EXISTS board_categories CASCADE;`);
+  await query(`DROP TABLE IF EXISTS user_sessions CASCADE;`);
+  await query(`DROP TABLE IF EXISTS openbanking_tokens CASCADE;`);
+  await query(`DROP TABLE IF EXISTS openbanking_accounts CASCADE;`);
+  await query(`DROP TABLE IF EXISTS auto_payments CASCADE;`);
+  await query(`DROP TABLE IF EXISTS subscription_eligibility CASCADE;`);
+  await query(`DROP TABLE IF EXISTS balance_history CASCADE;`);
+  await query(`DROP TABLE IF EXISTS user_portfolio CASCADE;`);
+  await query(`DROP TABLE IF EXISTS users CASCADE;`);
+
+  // 사용자 테이블 (INTEGER 타입으로 통일)
   await query(`
     CREATE TABLE IF NOT EXISTS users (
       id SERIAL PRIMARY KEY,
