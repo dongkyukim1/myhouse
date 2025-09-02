@@ -344,26 +344,7 @@ export default function WritePage() {
                 />
               </div>
               
-              <style jsx global>{`
-                .ql-editor {
-                  min-height: 300px !important;
-                  font-size: 16px !important;
-                  line-height: 1.6 !important;
-                  color: #333 !important;
-                }
-                .ql-toolbar {
-                  border-top: none !important;
-                  border-left: none !important;
-                  border-right: none !important;
-                  border-bottom: 1px solid #e0e0e0 !important;
-                }
-                .ql-container {
-                  border-bottom: none !important;
-                  border-left: none !important;
-                  border-right: none !important;
-                  font-family: 'Pretendard-Regular', sans-serif !important;
-                }
-              `}</style>
+
             </div>
 
             {/* 태그 */}
@@ -516,6 +497,7 @@ export default function WritePage() {
           min-height: 350px;
           font-size: 14px;
           line-height: 1.6;
+          color: #000;
         }
         .ql-editor::before {
           color: #999;
