@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { createPortal } from "react-dom";
 import AuthGuard from "@/components/AuthGuard";
 import { formatPrice, formatChange, getChangeColor } from "@/lib/finnhub";
 import Swal from 'sweetalert2';
@@ -45,9 +44,11 @@ export default function StocksPage() {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [translatedNews, setTranslatedNews] = useState<{[key: number]: any}>({});
   const [translating, setTranslating] = useState<{[key: number]: boolean}>({});
+  const [isClient, setIsClient] = useState(false);
 
-  // 반응형 감지
+  // 클라이언트 사이드 확인
   useEffect(() => {
+    setIsClient(true);
     const checkMobile = () => setIsMobile(window.innerWidth <= 768);
     checkMobile();
     window.addEventListener('resize', checkMobile);
@@ -58,7 +59,7 @@ export default function StocksPage() {
   useEffect(() => {
     loadPopularStocks();
     loadMarketNews();
-  }, [selectedMarket]);
+  }, [selectedMarket]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // 외부 클릭 감지하여 드롭다운 닫기
   useEffect(() => {
@@ -772,8 +773,8 @@ export default function StocksPage() {
         </div>
       </div>
       
-      {/* Portal을 사용한 검색 드롭다운 - 최상위 레이어 */}
-      {showSuggestions && searchSuggestions.length > 0 && typeof window !== 'undefined' && createPortal(
+      {/* 검색 드롭다운 - 클라이언트 사이드에서만 렌더링 */}
+      {isClient && showSuggestions && searchSuggestions.length > 0 && (
         <div 
           data-dropdown="suggestions"
           style={{
@@ -786,18 +787,14 @@ export default function StocksPage() {
             border: '3px solid rgba(255,255,255,0.8)',
             borderRadius: '16px',
             backdropFilter: 'blur(40px)',
-            zIndex: 2147483647, // 32비트 최대값 (브라우저 최대 z-index)
+            zIndex: 2147483647,
             maxHeight: '350px',
             overflowY: 'auto',
             boxShadow: '0 50px 100px rgba(0,0,0,0.95), 0 0 0 3px rgba(255,255,255,0.3), inset 0 1px 0 rgba(255,255,255,0.2)',
-            // 강제 최상위 표시
             isolation: 'isolate',
             willChange: 'transform',
             contain: 'layout style paint',
-            pointerEvents: 'auto',
-            // 추가 강제 속성
-            position: 'fixed',
-            display: 'block'
+            pointerEvents: 'auto'
           }}
         >
           {searchSuggestions.map((suggestion, index) => (
@@ -876,8 +873,7 @@ export default function StocksPage() {
               </div>
             </div>
           ))}
-        </div>,
-        document.body
+        </div>
       )}
     </AuthGuard>
   );
