@@ -10,7 +10,11 @@ function getPool(): Pool {
       throw new Error("DATABASE_URL is not set");
     }
     
-    pool = new Pool({ connectionString, max: 5 });
+    pool = new Pool({ 
+      connectionString, 
+      max: 5,
+      ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
+    });
   }
   
   return pool;
