@@ -6,11 +6,15 @@ import OptimizedWrapper from "@/components/OptimizedWrapper";
 export const metadata = {
   title: 'MyHouse',
   description: '청약 계산/관리 서비스',
-  viewport: 'width=device-width, initial-scale=1',
-  themeColor: '#000000',
   robots: 'index, follow',
   authors: [{ name: 'MyHouse Team' }],
   keywords: ['청약', '계산기', '주택', '부동산', 'LH', 'SH'],
+};
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  themeColor: '#000000',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

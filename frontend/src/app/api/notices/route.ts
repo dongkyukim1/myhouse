@@ -3,6 +3,7 @@ import * as cheerio from "cheerio";
 import iconv from "iconv-lite";
 
 export const runtime = "nodejs";
+export const dynamic = 'force-dynamic';
 
 const LH_BASE = 'https://apply.lh.or.kr';
 const SH_BASE = 'https://www.i-sh.co.kr';
