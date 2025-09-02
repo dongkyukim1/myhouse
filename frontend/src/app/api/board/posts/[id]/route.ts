@@ -29,7 +29,7 @@ export async function GET(
       FROM board_posts bp
       LEFT JOIN board_categories bc ON bp.category_id = bc.id
       LEFT JOIN users u ON bp.user_id = u.id
-      WHERE bp.id = $1 AND bp.status = 'published'
+      WHERE bp.id = $1
     `, [postId]);
 
     if (postResult.rows.length === 0) {

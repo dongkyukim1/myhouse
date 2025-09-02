@@ -19,9 +19,9 @@ export async function GET(request: NextRequest) {
     
     const offset = (page - 1) * limit;
 
-    let whereConditions = ['bp.status = $1'];
-    let params: any[] = ['published'];
-    let paramIndex = 2;
+    let whereConditions: string[] = [];
+    let params: any[] = [];
+    let paramIndex = 1;
 
     // 카테고리 필터
     if (category) {
@@ -46,10 +46,10 @@ export async function GET(request: NextRequest) {
 
     // 추천글 필터
     if (featured) {
-      whereConditions.push('bp.is_featured = true');
+      whereConditions.push('bp.is_pinned = true');
     }
 
-    const whereClause = whereConditions.join(' AND ');
+    const whereClause = whereConditions.length > 0 ? whereConditions.join(' AND ') : '1=1';
 
     // 총 개수 조회
     const countQuery = `
@@ -69,21 +69,17 @@ export async function GET(request: NextRequest) {
         bp.id,
         bp.title,
         bp.content,
-        bp.excerpt,
-        bp.slug,
         bp.view_count,
         bp.like_count,
         bp.comment_count,
-        bp.is_featured,
         bp.is_pinned,
+        bp.is_notice,
         bp.tags,
         bp.created_at,
         bp.updated_at,
         bc.name as category_name,
         bc.slug as category_slug,
-        bc.icon as category_icon,
-        u.name as author_name,
-        u.email as author_email
+        u.name as author_name
       FROM board_posts bp
       LEFT JOIN board_categories bc ON bp.category_id = bc.id
       LEFT JOIN users u ON bp.user_id = u.id
