@@ -1,6 +1,24 @@
 {
+  "name": "myhouse",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": ["frontend"],
+  "scripts": {
+    "dev": "cd frontend && npm run dev",
+    "build": "cd frontend && npm run build", 
+    "start": "cd frontend && npm run start",
+    "lint": "cd frontend && npm run lint",
+    "install:frontend": "cd frontend && npm install"
+  },
   "dependencies": {
     "@types/jsonwebtoken": "^9.0.10",
-    "jsonwebtoken": "^9.0.2"
+    "jsonwebtoken": "^9.0.2",
+    "next": "14.2.5",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
   }
 }
