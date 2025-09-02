@@ -13,7 +13,10 @@ function getPool(): Pool {
     pool = new Pool({ 
       connectionString, 
       max: 5,
-      ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
+      ssl: process.env.NODE_ENV === 'production' ? { 
+        rejectUnauthorized: false,
+        sslmode: 'require'
+      } : false
     });
   }
   

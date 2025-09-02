@@ -33,7 +33,15 @@ export async function GET(request: NextRequest) {
             const url = `https://apis.data.go.kr/1160100/service/GetStockSecuritiesInfoService/getStockPriceInfo?serviceKey=${KRX_API_KEY}&resultType=json&numOfRows=5&pageNo=1&basDt=${baseDate}&likeSrtnCd=${stockCode}`;
             
             const response = await fetch(url);
-            const data = await response.json();
+            const text = await response.text();
+            
+            // HTML 응답인지 확인 (OpenAPI 에러 페이지)
+            if (text.includes('<OpenAPI_S') || text.includes('<html>')) {
+              console.log(`KRX API HTML 응답 (${stock.symbol}):`, text.substring(0, 100));
+              return null;
+            }
+            
+            const data = JSON.parse(text);
             
             if (data?.response?.body?.items?.item) {
               const items = Array.isArray(data.response.body.items.item) 
