@@ -33,18 +33,7 @@ export default function MainPage() {
     };
   }, []);
 
-  // 집 종류 데이터
-  const houseTypes = [
-    { id: 1, name: '아파트', emoji: '🏢', color: '#4f46e5' },
-    { id: 2, name: '빌라', emoji: '🏘️', color: '#059669' },
-    { id: 3, name: '단독주택', emoji: '🏡', color: '#dc2626' },
-    { id: 4, name: '오피스텔', emoji: '🏬', color: '#7c3aed' },
-    { id: 5, name: '타운하우스', emoji: '🏘️', color: '#ea580c' },
-    { id: 6, name: '펜트하우스', emoji: '🏙️', color: '#0891b2' },
-    { id: 7, name: '원룸', emoji: '🏠', color: '#be123c' },
-    { id: 8, name: '투룸', emoji: '🏠', color: '#16a34a' },
-    { id: 9, name: '쓰리룸', emoji: '🏠', color: '#ca8a04' }
-  ];
+
 
   if (loading) {
     return (
@@ -148,7 +137,7 @@ export default function MainPage() {
         <div style={{
           width: windowWidth < 1200 ? '300px' : windowWidth < 1600 ? '350px' : '400px',
           height: windowWidth < 1200 ? '600px' : windowWidth < 1600 ? '700px' : '800px',
-          background: '#000',
+          background: 'url("/apt.png") center/cover no-repeat',
           borderRadius: windowWidth < 1200 ? '40px' : '50px',
           position: 'relative',
           overflow: 'hidden',
@@ -158,84 +147,53 @@ export default function MainPage() {
           maxWidth: '90vw',
           maxHeight: '85vh'
         }}>
-          {/* 집 종류 원형 패턴 */}
+
+
+          {/* 배경 오버레이 */}
           <div style={{
             position: 'absolute',
-            top: windowWidth < 1200 ? '25px' : '30px',
-            left: windowWidth < 1200 ? '15px' : '20px',
-            right: windowWidth < 1200 ? '15px' : '20px',
-            height: windowWidth < 1200 ? '250px' : '280px',
-            display: 'flex',
-            flexWrap: 'wrap',
-            alignItems: 'flex-start',
-            justifyContent: 'space-around',
-            gap: windowWidth < 1200 ? '12px' : '15px',
-            padding: windowWidth < 1200 ? '15px 8px' : '18px 10px'
-          }}>
-            {houseTypes.map((house, index) => (
-              <div
-                key={house.id}
-                style={{
-                  width: windowWidth < 1200 ? '60px' : '70px',
-                  height: windowWidth < 1200 ? '60px' : '70px',
-                  borderRadius: '50%',
-                  background: `linear-gradient(145deg, ${house.color}, ${house.color}dd)`,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: windowWidth < 1200 ? '24px' : '28px',
-                  animation: `float ${3 + (index % 3)}s ease-in-out infinite ${index * 0.3}s`,
-                  boxShadow: '0 10px 25px rgba(0, 0, 0, 0.7), 0 3px 10px rgba(255, 255, 255, 0.1) inset',
-                  border: '2px solid rgba(255, 255, 255, 0.15)',
-                  transition: 'all 0.3s ease',
-                  cursor: 'pointer'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'scale(1.1)';
-                  e.currentTarget.style.boxShadow = '0 20px 45px rgba(0, 0, 0, 0.8), 0 8px 20px rgba(255, 255, 255, 0.2) inset';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'scale(1)';
-                  e.currentTarget.style.boxShadow = '0 15px 35px rgba(0, 0, 0, 0.7), 0 5px 15px rgba(255, 255, 255, 0.1) inset';
-                }}
-              >
-                {house.emoji}
-              </div>
-            ))}
-          </div>
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            background: 'rgba(0, 0, 0, 0.4)',
+            borderRadius: windowWidth < 1200 ? '40px' : '50px'
+          }}></div>
 
           {/* 중앙 로고 */}
           <div style={{
             position: 'absolute',
-            top: windowWidth < 1200 ? '290px' : '330px',
+            top: windowWidth < 1200 ? '150px' : '200px',
             left: '50%',
             transform: 'translateX(-50%)',
             color: 'white',
             background: 'white',
             borderRadius: '50%',
-            width: windowWidth < 1200 ? '65px' : '75px',
-            height: windowWidth < 1200 ? '65px' : '75px',
+            width: windowWidth < 1200 ? '80px' : '90px',
+            height: windowWidth < 1200 ? '80px' : '90px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             boxShadow: '0 15px 30px rgba(0, 0, 0, 0.8)',
-            border: '3px solid rgba(255, 255, 255, 0.1)'
+            border: '3px solid rgba(255, 255, 255, 0.1)',
+            zIndex: 10
           }}>
             <span style={{ 
               color: '#000', 
-              fontSize: windowWidth < 1200 ? '30px' : '35px'
+              fontSize: windowWidth < 1200 ? '35px' : '40px'
             }}>🏠</span>
           </div>
 
           {/* 핸드폰 하단 텍스트 및 버튼 */}
           <div style={{
             position: 'absolute',
-            top: windowWidth < 768 ? '420px' : windowWidth < 1200 ? '470px' : '520px',
+            top: windowWidth < 1200 ? '320px' : '380px',
             left: windowWidth < 1200 ? '20px' : '25px',
             right: windowWidth < 1200 ? '20px' : '25px',
             textAlign: 'center',
             color: 'white',
-            paddingBottom: '30px'
+            paddingBottom: '20px',
+            zIndex: 10
           }}>
             <h2 style={{
               fontSize: windowWidth < 1200 ? '16px' : '18px',
@@ -264,60 +222,67 @@ export default function MainPage() {
               onClick={() => router.push('/register')}
               style={{
                 width: '100%',
-                padding: windowWidth < 1200 ? '10px 16px' : '12px 18px',
-                background: '#1db954',
-                color: '#000000',
+                padding: windowWidth < 1200 ? '14px 20px' : '16px 24px',
+                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                color: '#ffffff',
                 border: 'none',
-                borderRadius: '50px',
-                fontSize: windowWidth < 1200 ? '12px' : '13px',
+                borderRadius: '16px',
+                fontSize: windowWidth < 1200 ? '14px' : '15px',
                 fontFamily: 'Pretendard-Bold',
                 fontWeight: '700',
                 cursor: 'pointer',
-                transition: 'all 0.3s ease',
-                marginBottom: windowWidth < 1200 ? '10px' : '12px',
-                boxShadow: '0 6px 20px rgba(29, 185, 84, 0.4)',
-                letterSpacing: '0.3px'
+                transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                marginBottom: windowWidth < 1200 ? '12px' : '14px',
+                boxShadow: '0 8px 32px rgba(102, 126, 234, 0.4), 0 4px 16px rgba(118, 75, 162, 0.2)',
+                letterSpacing: '0.5px',
+                position: 'relative',
+                overflow: 'hidden'
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'scale(1.05)';
-                e.currentTarget.style.background = '#1ed760';
-                e.currentTarget.style.boxShadow = '0 12px 35px rgba(29, 185, 84, 0.6)';
+                e.currentTarget.style.transform = 'translateY(-2px) scale(1.02)';
+                e.currentTarget.style.background = 'linear-gradient(135deg, #7289da 0%, #8e5ec2 100%)';
+                e.currentTarget.style.boxShadow = '0 16px 48px rgba(102, 126, 234, 0.6), 0 8px 24px rgba(118, 75, 162, 0.3)';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'scale(1)';
-                e.currentTarget.style.background = '#1db954';
-                e.currentTarget.style.boxShadow = '0 8px 25px rgba(29, 185, 84, 0.4)';
+                e.currentTarget.style.transform = 'translateY(0) scale(1)';
+                e.currentTarget.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+                e.currentTarget.style.boxShadow = '0 8px 32px rgba(102, 126, 234, 0.4), 0 4px 16px rgba(118, 75, 162, 0.2)';
               }}
             >
-              무료로 가입하기
+              가입하기
             </button>
 
             <button
               onClick={() => router.push('/login')}
               style={{
                 width: '100%',
-                padding: windowWidth < 1200 ? '10px 16px' : '12px 18px',
-                background: 'linear-gradient(145deg, #ffffff 0%, #f0f0f0 100%)',
-                color: '#000000',
-                border: 'none',
-                borderRadius: '50px',
-                fontSize: windowWidth < 1200 ? '12px' : '13px',
+                padding: windowWidth < 1200 ? '14px 20px' : '16px 24px',
+                background: 'rgba(255, 255, 255, 0.15)',
+                color: '#ffffff',
+                border: '2px solid rgba(255, 255, 255, 0.3)',
+                borderRadius: '16px',
+                fontSize: windowWidth < 1200 ? '14px' : '15px',
                 fontFamily: 'Pretendard-Bold',
                 fontWeight: '700',
                 cursor: 'pointer',
-                transition: 'all 0.3s ease',
-                letterSpacing: '0.3px',
-                boxShadow: '0 6px 20px rgba(255, 255, 255, 0.3)'
+                transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                letterSpacing: '0.5px',
+                backdropFilter: 'blur(10px)',
+                boxShadow: '0 8px 32px rgba(255, 255, 255, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.2)',
+                position: 'relative',
+                overflow: 'hidden'
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'scale(1.05)';
-                e.currentTarget.style.background = 'linear-gradient(145deg, #ffffff 0%, #e8e8e8 100%)';
-                e.currentTarget.style.boxShadow = '0 12px 35px rgba(255, 255, 255, 0.5)';
+                e.currentTarget.style.transform = 'translateY(-2px) scale(1.02)';
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.25)';
+                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.5)';
+                e.currentTarget.style.boxShadow = '0 16px 48px rgba(255, 255, 255, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.3)';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'scale(1)';
-                e.currentTarget.style.background = 'linear-gradient(145deg, #ffffff 0%, #f0f0f0 100%)';
-                e.currentTarget.style.boxShadow = '0 8px 25px rgba(255, 255, 255, 0.3)';
+                e.currentTarget.style.transform = 'translateY(0) scale(1)';
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.15)';
+                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+                e.currentTarget.style.boxShadow = '0 8px 32px rgba(255, 255, 255, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.2)';
               }}
             >
               로그인
