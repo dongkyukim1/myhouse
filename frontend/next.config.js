@@ -1,9 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  experimental: {
-    appDir: true
-  },
+
   // 성능 최적화 설정
   compress: true,
   poweredByHeader: false,

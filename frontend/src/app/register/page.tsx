@@ -85,13 +85,13 @@ export default function RegisterPage() {
           <div className="form-row">
             <div className="input-field">
               <label className="input-label">이메일</label>
-              <input type="email" name="email" value={formData.email} onChange={handleChange} required className="text-input" placeholder="name@example.com" />
+              <input type="email" name="email" value={formData.email} onChange={handleChange} required className="text-input" placeholder="name@example.com" autoComplete="email" />
             </div>
           </div>
           <div className="form-row">
             <div className="input-field">
               <label className="input-label">이름</label>
-              <input type="text" name="name" value={formData.name} onChange={handleChange} required className="text-input" placeholder="홍길동" />
+              <input type="text" name="name" value={formData.name} onChange={handleChange} required className="text-input" placeholder="홍길동" autoComplete="name" />
             </div>
           </div>
 
@@ -103,11 +103,11 @@ export default function RegisterPage() {
                   {showPassword ? '숨기기' : '보기'}
                 </button>
               </div>
-              <input type={showPassword ? 'text' : 'password'} name="password" value={formData.password} onChange={handleChange} required className="text-input" />
+              <input type={showPassword ? 'text' : 'password'} name="password" value={formData.password} onChange={handleChange} required className="text-input" autoComplete="new-password" />
             </div>
             <div className="input-field">
               <label className="input-label">비밀번호 확인</label>
-              <input type={showPassword ? 'text' : 'password'} name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} required className="text-input" />
+              <input type={showPassword ? 'text' : 'password'} name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} required className="text-input" autoComplete="new-password" />
             </div>
           </div>
 

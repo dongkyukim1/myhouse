@@ -169,6 +169,7 @@ export default function LoginPage() {
                 onChange={handleChange}
                 required
                 placeholder="example@email.com"
+                autoComplete="email"
                 style={{
                   width: '100%',
                   padding: '16px 20px',
@@ -211,6 +212,7 @@ export default function LoginPage() {
                 onChange={handleChange}
                 required
                 placeholder="비밀번호를 입력하세요"
+                autoComplete="current-password"
                 style={{
                   width: '100%',
                   padding: '16px 20px',

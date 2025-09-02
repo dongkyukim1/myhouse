@@ -2,18 +2,36 @@
 
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/components/AuthProvider';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { FullScreenLoading } from '@/components/LoadingAnimation';
 
 export default function MainPage() {
   const router = useRouter();
   const { user, loading } = useAuth();
+  const [windowWidth, setWindowWidth] = useState(1600); // 기본값 설정
 
   useEffect(() => {
     if (!loading && user) {
       router.push('/home');
     }
   }, [user, loading, router]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    // 컴포넌트 마운트 시 현재 화면 크기 설정
+    setWindowWidth(window.innerWidth);
+    
+    // 화면 크기 변경 이벤트 리스너 추가
+    window.addEventListener('resize', handleResize);
+    
+    // 컴포넌트 언마운트 시 이벤트 리스너 제거
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   // 집 종류 데이터
   const houseTypes = [
@@ -48,7 +66,8 @@ export default function MainPage() {
       width: '100%',
       height: '100%',
       zIndex: 1000,
-      padding: '0'
+      padding: '0',
+      overflow: 'auto'
     }}>
       {/* 블러 처리된 배경 이미지 */}
       <div style={{
@@ -80,15 +99,17 @@ export default function MainPage() {
         zIndex: 3,
         width: '100%',
         height: '100%',
-        display: 'flex'
+        display: 'flex',
+        flexDirection: windowWidth < 1200 ? 'column' : 'row'
       }}>
       {/* 왼쪽 로고 섹션 */}
       <div style={{
-        flex: 1,
+        flex: windowWidth < 1200 ? '0 0 auto' : 1,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '60px'
+        padding: windowWidth < 1200 ? '20px' : '40px',
+        minHeight: windowWidth < 1200 ? '30vh' : 'auto'
       }}>
         <div style={{ 
           display: 'flex', 
@@ -96,13 +117,12 @@ export default function MainPage() {
           justifyContent: 'center'
         }}>
           <h1 style={{
-            fontSize: '140px',
+            fontSize: windowWidth < 1200 ? '80px' : windowWidth < 1600 ? '100px' : '120px',
             fontFamily: '"Inter", "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, sans-serif',
             fontWeight: '900',
             margin: 0,
-            letterSpacing: '-4px',
+            letterSpacing: '-3px',
             textTransform: 'none',
-            
             color: 'white',
             transform: 'perspective(1000px) rotateY(3deg) rotateX(-1deg)',
             transformStyle: 'preserve-3d',
@@ -115,57 +135,58 @@ export default function MainPage() {
 
       {/* 오른쪽 핸드폰 실루엣 섹션 */}
       <div style={{
-        width: '50%',
+        width: windowWidth < 1200 ? '100%' : '50%',
         display: 'flex',
-        alignItems: 'flex-start',
-        justifyContent: 'flex-start',
-        padding: '0',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: windowWidth < 1200 ? '20px' : '20px 0',
         position: 'relative',
-        overflow: 'hidden'
+        overflow: 'visible',
+        minHeight: windowWidth < 1200 ? '100vh' : '100vh'
       }}>
-        {/* 핸드폰 실루엣 - 화면에서 짤리게 */}
+        {/* 핸드폰 실루엣 - 반응형 */}
         <div style={{
-          width: '600px',
-          height: '1200px',
+          width: windowWidth < 1200 ? '300px' : windowWidth < 1600 ? '350px' : '400px',
+          height: windowWidth < 1200 ? '600px' : windowWidth < 1600 ? '700px' : '800px',
           background: '#000',
-          borderRadius: '70px',
+          borderRadius: windowWidth < 1200 ? '40px' : '50px',
           position: 'relative',
           overflow: 'hidden',
-          boxShadow: '0 30px 100px rgba(0, 0, 0, 0.5)',
-          border: '20px solid #1a1a1a',
-          marginTop: '100px',
-          marginLeft: '100px',
-          marginBottom: '0px'
+          boxShadow: '0 20px 60px rgba(0, 0, 0, 0.5)',
+          border: windowWidth < 1200 ? '12px solid #1a1a1a' : '15px solid #1a1a1a',
+          margin: 'auto',
+          maxWidth: '90vw',
+          maxHeight: '85vh'
         }}>
           {/* 집 종류 원형 패턴 */}
           <div style={{
             position: 'absolute',
-            top: '60px',
-            left: '30px',
-            right: '30px',
-            height: '480px',
+            top: windowWidth < 1200 ? '25px' : '30px',
+            left: windowWidth < 1200 ? '15px' : '20px',
+            right: windowWidth < 1200 ? '15px' : '20px',
+            height: windowWidth < 1200 ? '250px' : '280px',
             display: 'flex',
             flexWrap: 'wrap',
             alignItems: 'flex-start',
             justifyContent: 'space-around',
-            gap: '35px',
-            padding: '40px 20px'
+            gap: windowWidth < 1200 ? '12px' : '15px',
+            padding: windowWidth < 1200 ? '15px 8px' : '18px 10px'
           }}>
             {houseTypes.map((house, index) => (
               <div
                 key={house.id}
                 style={{
-                  width: '120px',
-                  height: '120px',
+                  width: windowWidth < 1200 ? '60px' : '70px',
+                  height: windowWidth < 1200 ? '60px' : '70px',
                   borderRadius: '50%',
                   background: `linear-gradient(145deg, ${house.color}, ${house.color}dd)`,
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  fontSize: '50px',
+                  fontSize: windowWidth < 1200 ? '24px' : '28px',
                   animation: `float ${3 + (index % 3)}s ease-in-out infinite ${index * 0.3}s`,
-                  boxShadow: '0 15px 35px rgba(0, 0, 0, 0.7), 0 5px 15px rgba(255, 255, 255, 0.1) inset',
-                  border: '3px solid rgba(255, 255, 255, 0.15)',
+                  boxShadow: '0 10px 25px rgba(0, 0, 0, 0.7), 0 3px 10px rgba(255, 255, 255, 0.1) inset',
+                  border: '2px solid rgba(255, 255, 255, 0.15)',
                   transition: 'all 0.3s ease',
                   cursor: 'pointer'
                 }}
@@ -183,54 +204,57 @@ export default function MainPage() {
             ))}
           </div>
 
-          {/* Spotify 로고 스타일 */}
+          {/* 중앙 로고 */}
           <div style={{
             position: 'absolute',
-            top: '570px',
+            top: windowWidth < 1200 ? '290px' : '330px',
             left: '50%',
             transform: 'translateX(-50%)',
             color: 'white',
-            fontSize: '60px',
             background: 'white',
             borderRadius: '50%',
-            width: '120px',
-            height: '120px',
+            width: windowWidth < 1200 ? '65px' : '75px',
+            height: windowWidth < 1200 ? '65px' : '75px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            boxShadow: '0 20px 40px rgba(0, 0, 0, 0.8)',
-            border: '4px solid rgba(255, 255, 255, 0.1)'
+            boxShadow: '0 15px 30px rgba(0, 0, 0, 0.8)',
+            border: '3px solid rgba(255, 255, 255, 0.1)'
           }}>
-            <span style={{ color: '#000', fontSize: '70px' }}>🏠</span>
+            <span style={{ 
+              color: '#000', 
+              fontSize: windowWidth < 1200 ? '30px' : '35px'
+            }}>🏠</span>
           </div>
 
           {/* 핸드폰 하단 텍스트 및 버튼 */}
           <div style={{
             position: 'absolute',
-            top: '720px',
-            left: '40px',
-            right: '40px',
+            top: windowWidth < 768 ? '420px' : windowWidth < 1200 ? '470px' : '520px',
+            left: windowWidth < 1200 ? '20px' : '25px',
+            right: windowWidth < 1200 ? '20px' : '25px',
             textAlign: 'center',
-            color: 'white'
+            color: 'white',
+            paddingBottom: '30px'
           }}>
             <h2 style={{
-              fontSize: '32px',
+              fontSize: windowWidth < 1200 ? '16px' : '18px',
               fontFamily: 'Pretendard-Black',
               fontWeight: '900',
-              margin: '0 0 6px 0',
+              margin: '0 0 4px 0',
               lineHeight: '1.1',
-              letterSpacing: '-1px',
+              letterSpacing: '-0.5px',
               textShadow: '0 2px 4px rgba(0, 0, 0, 0.5)'
             }}>
               이제 좀 당첨되라.
             </h2>
             <h3 style={{
-              fontSize: '32px',
+              fontSize: windowWidth < 1200 ? '16px' : '18px',
               fontFamily: 'Pretendard-Black',
               fontWeight: '900',
-              margin: '0 0 35px 0',
+              margin: windowWidth < 1200 ? '0 0 15px 0' : '0 0 18px 0',
               lineHeight: '1.1',
-              letterSpacing: '-1px',
+              letterSpacing: '-0.5px',
               textShadow: '0 2px 4px rgba(0, 0, 0, 0.5)'
             }}>
               MyHouse에서 편하게하자.
@@ -240,19 +264,19 @@ export default function MainPage() {
               onClick={() => router.push('/register')}
               style={{
                 width: '100%',
-                padding: '16px 24px',
+                padding: windowWidth < 1200 ? '10px 16px' : '12px 18px',
                 background: '#1db954',
                 color: '#000000',
                 border: 'none',
                 borderRadius: '50px',
-                fontSize: '16px',
+                fontSize: windowWidth < 1200 ? '12px' : '13px',
                 fontFamily: 'Pretendard-Bold',
                 fontWeight: '700',
                 cursor: 'pointer',
                 transition: 'all 0.3s ease',
-                marginBottom: '16px',
-                boxShadow: '0 8px 25px rgba(29, 185, 84, 0.4)',
-                letterSpacing: '0.5px'
+                marginBottom: windowWidth < 1200 ? '10px' : '12px',
+                boxShadow: '0 6px 20px rgba(29, 185, 84, 0.4)',
+                letterSpacing: '0.3px'
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = 'scale(1.05)';
@@ -272,18 +296,18 @@ export default function MainPage() {
               onClick={() => router.push('/login')}
               style={{
                 width: '100%',
-                padding: '16px 24px',
+                padding: windowWidth < 1200 ? '10px 16px' : '12px 18px',
                 background: 'linear-gradient(145deg, #ffffff 0%, #f0f0f0 100%)',
                 color: '#000000',
                 border: 'none',
                 borderRadius: '50px',
-                fontSize: '16px',
+                fontSize: windowWidth < 1200 ? '12px' : '13px',
                 fontFamily: 'Pretendard-Bold',
                 fontWeight: '700',
                 cursor: 'pointer',
                 transition: 'all 0.3s ease',
-                letterSpacing: '0.5px',
-                boxShadow: '0 8px 25px rgba(255, 255, 255, 0.3)'
+                letterSpacing: '0.3px',
+                boxShadow: '0 6px 20px rgba(255, 255, 255, 0.3)'
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = 'scale(1.05)';
