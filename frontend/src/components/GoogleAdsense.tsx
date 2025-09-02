@@ -58,7 +58,7 @@ export default function GoogleAdsense({
 export function BannerAd({ className = '', style = {} }: { className?: string; style?: React.CSSProperties }) {
   return (
     <GoogleAdsense
-      slot="1234567890" // 실제 슬롯 ID로 교체 필요
+      slot="8551473398" // 실제 슬롯 ID
       className={className}
       style={{
         width: '100%',
@@ -77,7 +77,7 @@ export function BannerAd({ className = '', style = {} }: { className?: string; s
 export function SquareAd({ className = '', style = {} }: { className?: string; style?: React.CSSProperties }) {
   return (
     <GoogleAdsense
-      slot="0987654321" // 실제 슬롯 ID로 교체 필요
+      slot="8551473398" // 동일한 광고 단위 사용
       className={className}
       style={{
         width: '300px',
@@ -85,7 +85,7 @@ export function SquareAd({ className = '', style = {} }: { className?: string; s
         margin: '20px auto',
         ...style
       }}
-      format="rectangle"
+      format="auto"
     />
   );
 }
@@ -94,7 +94,7 @@ export function SquareAd({ className = '', style = {} }: { className?: string; s
 export function InFeedAd({ className = '', style = {} }: { className?: string; style?: React.CSSProperties }) {
   return (
     <GoogleAdsense
-      slot="1357902468" // 실제 슬롯 ID로 교체 필요
+      slot="8551473398" // 동일한 광고 단위 사용
       className={className}
       style={{
         width: '100%',
@@ -103,7 +103,7 @@ export function InFeedAd({ className = '', style = {} }: { className?: string; s
         margin: '30px 0',
         ...style
       }}
-      format="fluid"
+      format="auto"
     />
   );
 }
@@ -113,7 +113,7 @@ export function ResponsiveAd({ className = '', style = {} }: { className?: strin
   return (
     <div className={className} style={{ textAlign: 'center', ...style }}>
       <GoogleAdsense
-        slot="2468135790" // 실제 슬롯 ID로 교체 필요
+        slot="8551473398" // 동일한 광고 단위 사용
         style={{
           width: '100%',
           height: 'auto',
