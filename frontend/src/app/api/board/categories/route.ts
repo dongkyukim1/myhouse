@@ -11,7 +11,6 @@ export async function GET(request: NextRequest) {
   try {
     const result = await query(`
       SELECT * FROM board_categories 
-      WHERE is_active = true 
       ORDER BY order_index ASC, name ASC
     `);
 
@@ -45,7 +44,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { name, slug, description, icon, orderIndex } = body;
+    const { name, slug, description, orderIndex } = body;
 
     if (!name || !slug) {
       return NextResponse.json(
@@ -55,10 +54,10 @@ export async function POST(request: NextRequest) {
     }
 
     const result = await query(`
-      INSERT INTO board_categories (name, slug, description, icon, order_index)
-      VALUES ($1, $2, $3, $4, $5)
+      INSERT INTO board_categories (name, slug, description, order_index)
+      VALUES ($1, $2, $3, $4)
       RETURNING *
-    `, [name, slug, description, icon || '📝', orderIndex || 0]);
+    `, [name, slug, description, orderIndex || 0]);
 
     return NextResponse.json({
       success: true,
