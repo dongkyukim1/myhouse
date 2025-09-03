@@ -287,10 +287,15 @@ export default function BoardPage() {
               ))}
             </div>
 
-            {/* 사이드바 광고 */}
+            {/* 사이드바 광고 - 콘텐츠가 충분할 때만 표시 */}
             {!isMobile && (
               <div style={{ marginTop: '20px' }}>
-                <SquareAd />
+                <SquareAd 
+                  isLoading={loading}
+                  hasError={false}
+                  contentReady={posts.length > 0 && !loading}
+                  minContentHeight={500}
+                />
               </div>
             )}
           </aside>

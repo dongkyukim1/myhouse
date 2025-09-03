@@ -579,8 +579,14 @@ export default function StocksPage() {
               )}
             </div>
 
-            {/* 주식 목록 하단 광고 */}
-            <ResponsiveAd style={{ margin: '30px 0' }} />
+            {/* 주식 목록 하단 광고 - 콘텐츠가 충분할 때만 표시 */}
+            <ResponsiveAd 
+              style={{ margin: '30px 0' }} 
+              isLoading={loading}
+              hasError={stocks.some(stock => stock.error)}
+              contentReady={stocks.length >= 3 && !loading}
+              minContentHeight={800}
+            />
           </div>
 
           {/* 뉴스 영역 */}

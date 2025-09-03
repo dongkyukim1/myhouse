@@ -159,8 +159,14 @@ export default function HomePage() {
 
         <Chips items={CATEGORIES} value={category} onChange={setCategory} />
 
-        {/* 상단 배너 광고 */}
-        <BannerAd style={{ margin: '20px 0' }} />
+        {/* 상단 배너 광고 - 콘텐츠가 로드된 후에만 표시 */}
+        <BannerAd 
+          style={{ margin: '20px 0' }} 
+          isLoading={loading}
+          hasError={!!error}
+          contentReady={videos.length > 0 && !loading && !error}
+          minContentHeight={400}
+        />
 
         {loading && <div>로딩 중...</div>}
         {error && <div style={{ color: "#f55" }}>{error}</div>}
@@ -178,8 +184,14 @@ export default function HomePage() {
           ))}
         </CarouselRow>
 
-        {/* 하단 인피드 광고 */}
-        <InFeedAd style={{ margin: '30px 0' }} />
+        {/* 하단 인피드 광고 - 콘텐츠가 충분할 때만 표시 */}
+        <InFeedAd 
+          style={{ margin: '30px 0' }} 
+          isLoading={loading}
+          hasError={!!error}
+          contentReady={videos.length >= 5 && !loading && !error}
+          minContentHeight={600}
+        />
       </main>
     </AuthGuard>
   );
