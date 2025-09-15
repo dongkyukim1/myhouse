@@ -156,3 +156,189 @@ CREATE INDEX IF NOT EXISTS idx_subscription_eligibility_user_id ON subscription_
 CREATE INDEX IF NOT EXISTS idx_balance_history_user_id ON balance_history(user_id);
 CREATE INDEX IF NOT EXISTS idx_balance_history_account_id ON balance_history(account_id);
 CREATE INDEX IF NOT EXISTS idx_balance_history_date ON balance_history(inquiry_date);
+
+-- 게시판 카테고리 테이블
+CREATE TABLE IF NOT EXISTS board_categories (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(100) NOT NULL,
+  slug VARCHAR(100) UNIQUE NOT NULL,
+  description TEXT,
+  icon VARCHAR(50),
+  order_index INTEGER DEFAULT 0,
+  is_active BOOLEAN DEFAULT TRUE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 게시글 테이블
+CREATE TABLE IF NOT EXISTS board_posts (
+  id SERIAL PRIMARY KEY,
+  category_id INTEGER REFERENCES board_categories(id) ON DELETE SET NULL,
+  user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+  title VARCHAR(500) NOT NULL,
+  content TEXT NOT NULL,
+  excerpt TEXT,
+  slug VARCHAR(500) UNIQUE NOT NULL,
+  status VARCHAR(20) DEFAULT 'published', -- published, draft, deleted
+  view_count INTEGER DEFAULT 0,
+  like_count INTEGER DEFAULT 0,
+  comment_count INTEGER DEFAULT 0,
+  is_featured BOOLEAN DEFAULT FALSE,
+  is_pinned BOOLEAN DEFAULT FALSE,
+  is_notice BOOLEAN DEFAULT FALSE,
+  tags TEXT[], -- 태그 배열
+  meta_description TEXT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 게시글 댓글 테이블
+CREATE TABLE IF NOT EXISTS board_comments (
+  id SERIAL PRIMARY KEY,
+  post_id INTEGER REFERENCES board_posts(id) ON DELETE CASCADE,
+  user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+  parent_id INTEGER REFERENCES board_comments(id) ON DELETE CASCADE,
+  content TEXT NOT NULL,
+  is_deleted BOOLEAN DEFAULT FALSE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 게시글 좋아요 테이블
+CREATE TABLE IF NOT EXISTS board_post_likes (
+  id SERIAL PRIMARY KEY,
+  post_id INTEGER REFERENCES board_posts(id) ON DELETE CASCADE,
+  user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE(post_id, user_id)
+);
+
+-- 매물 테이블 (원룸/투룸 장터)
+CREATE TABLE IF NOT EXISTS marketplace_rooms (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+  title VARCHAR(500) NOT NULL,
+  description TEXT NOT NULL,
+  room_type VARCHAR(20) NOT NULL, -- 'one-room', 'two-room'
+  address TEXT NOT NULL,
+  district VARCHAR(100), -- 구/군
+  neighborhood VARCHAR(100), -- 동/면
+  latitude DECIMAL(10, 8), -- 위도
+  longitude DECIMAL(11, 8), -- 경도
+  monthly_rent INTEGER NOT NULL, -- 월세
+  deposit INTEGER NOT NULL, -- 보증금
+  maintenance_fee INTEGER DEFAULT 0, -- 관리비
+  area DECIMAL(10, 2), -- 면적 (평수)
+  floor INTEGER, -- 층수
+  total_floors INTEGER, -- 총 층수
+  building_type VARCHAR(50), -- 건물 유형 (아파트, 빌라, 원룸텔 등)
+  room_count INTEGER DEFAULT 1, -- 방 개수
+  bathroom_count INTEGER DEFAULT 1, -- 화장실 개수
+  options JSONB, -- 옵션 (에어컨, 냉장고, 세탁기 등)
+  images JSONB, -- 이미지 URL 배열
+  view_count INTEGER DEFAULT 0,
+  status VARCHAR(20) DEFAULT 'available', -- available, reserved, sold, deleted
+  available_date DATE, -- 입주 가능일
+  phone_number VARCHAR(20),
+  negotiable BOOLEAN DEFAULT FALSE, -- 가격 협의 가능 여부
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 매물 문의 테이블
+CREATE TABLE IF NOT EXISTS marketplace_inquiries (
+  id SERIAL PRIMARY KEY,
+  room_id INTEGER REFERENCES marketplace_rooms(id) ON DELETE CASCADE,
+  user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+  message TEXT NOT NULL,
+  phone_number VARCHAR(20),
+  status VARCHAR(20) DEFAULT 'pending', -- pending, replied, closed
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 매물 즐겨찾기 테이블
+CREATE TABLE IF NOT EXISTS marketplace_favorites (
+  id SERIAL PRIMARY KEY,
+  room_id INTEGER REFERENCES marketplace_rooms(id) ON DELETE CASCADE,
+  user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE(room_id, user_id)
+);
+
+-- 파일 업로드 테이블
+CREATE TABLE IF NOT EXISTS file_uploads (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+  original_name VARCHAR(500) NOT NULL,
+  file_name VARCHAR(500) NOT NULL,
+  file_path VARCHAR(1000) NOT NULL,
+  file_size BIGINT NOT NULL,
+  mime_type VARCHAR(100) NOT NULL,
+  file_type VARCHAR(50), -- 'image', 'document', 'video' 등
+  reference_type VARCHAR(50), -- 'board_post', 'marketplace_room' 등
+  reference_id INTEGER,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 알림 테이블
+CREATE TABLE IF NOT EXISTS notifications (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+  title VARCHAR(200) NOT NULL,
+  message TEXT NOT NULL,
+  type VARCHAR(50) NOT NULL, -- 'board_comment', 'marketplace_inquiry' 등
+  reference_type VARCHAR(50),
+  reference_id INTEGER,
+  is_read BOOLEAN DEFAULT FALSE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 게시판 관련 인덱스
+CREATE INDEX IF NOT EXISTS idx_board_categories_slug ON board_categories(slug);
+CREATE INDEX IF NOT EXISTS idx_board_categories_order ON board_categories(order_index);
+CREATE INDEX IF NOT EXISTS idx_board_posts_category_id ON board_posts(category_id);
+CREATE INDEX IF NOT EXISTS idx_board_posts_user_id ON board_posts(user_id);
+CREATE INDEX IF NOT EXISTS idx_board_posts_slug ON board_posts(slug);
+CREATE INDEX IF NOT EXISTS idx_board_posts_status ON board_posts(status);
+CREATE INDEX IF NOT EXISTS idx_board_posts_created_at ON board_posts(created_at);
+CREATE INDEX IF NOT EXISTS idx_board_posts_is_pinned ON board_posts(is_pinned);
+CREATE INDEX IF NOT EXISTS idx_board_posts_is_featured ON board_posts(is_featured);
+CREATE INDEX IF NOT EXISTS idx_board_posts_tags ON board_posts USING GIN(tags);
+CREATE INDEX IF NOT EXISTS idx_board_comments_post_id ON board_comments(post_id);
+CREATE INDEX IF NOT EXISTS idx_board_comments_user_id ON board_comments(user_id);
+CREATE INDEX IF NOT EXISTS idx_board_comments_parent_id ON board_comments(parent_id);
+CREATE INDEX IF NOT EXISTS idx_board_post_likes_post_id ON board_post_likes(post_id);
+CREATE INDEX IF NOT EXISTS idx_board_post_likes_user_id ON board_post_likes(user_id);
+
+-- 매물 관련 인덱스
+CREATE INDEX IF NOT EXISTS idx_marketplace_rooms_user_id ON marketplace_rooms(user_id);
+CREATE INDEX IF NOT EXISTS idx_marketplace_rooms_room_type ON marketplace_rooms(room_type);
+CREATE INDEX IF NOT EXISTS idx_marketplace_rooms_district ON marketplace_rooms(district);
+CREATE INDEX IF NOT EXISTS idx_marketplace_rooms_neighborhood ON marketplace_rooms(neighborhood);
+CREATE INDEX IF NOT EXISTS idx_marketplace_rooms_monthly_rent ON marketplace_rooms(monthly_rent);
+CREATE INDEX IF NOT EXISTS idx_marketplace_rooms_status ON marketplace_rooms(status);
+CREATE INDEX IF NOT EXISTS idx_marketplace_rooms_created_at ON marketplace_rooms(created_at);
+CREATE INDEX IF NOT EXISTS idx_marketplace_rooms_location ON marketplace_rooms(latitude, longitude);
+CREATE INDEX IF NOT EXISTS idx_marketplace_inquiries_room_id ON marketplace_inquiries(room_id);
+CREATE INDEX IF NOT EXISTS idx_marketplace_inquiries_user_id ON marketplace_inquiries(user_id);
+CREATE INDEX IF NOT EXISTS idx_marketplace_favorites_room_id ON marketplace_favorites(room_id);
+CREATE INDEX IF NOT EXISTS idx_marketplace_favorites_user_id ON marketplace_favorites(user_id);
+
+-- 기타 인덱스
+CREATE INDEX IF NOT EXISTS idx_file_uploads_user_id ON file_uploads(user_id);
+CREATE INDEX IF NOT EXISTS idx_file_uploads_reference ON file_uploads(reference_type, reference_id);
+CREATE INDEX IF NOT EXISTS idx_notifications_user_id ON notifications(user_id);
+CREATE INDEX IF NOT EXISTS idx_notifications_is_read ON notifications(is_read);
+
+-- 기본 카테고리 데이터 삽입
+INSERT INTO board_categories (name, slug, description, icon, order_index) VALUES
+('일반', 'general', '일반적인 청약 관련 정보와 토론', '💬', 1),
+('정보공유', 'info-sharing', '유용한 청약 정보와 팁을 공유하는 공간', '💡', 2),
+('질문답변', 'qna', '청약 관련 질문과 답변', '❓', 3),
+('분양정보', 'presale-info', '최신 분양 정보와 일정', '🏢', 4),
+('원룸장터', 'one-room-market', '원룸 매매/임대 정보 공유', '🏠', 5),
+('투룸장터', 'two-room-market', '투룸 매매/임대 정보 공유', '🏘️', 6),
+('경험담', 'experience', '청약 및 당첨 경험담 공유', '📝', 7),
+('지역정보', 'local-info', '지역별 부동산 정보', '📍', 8)
+ON CONFLICT (slug) DO NOTHING;

@@ -140,7 +140,14 @@ export async function cacheVideos(channelId: string, videos: any[]): Promise<voi
   try {
     console.log(`비디오 캐시 저장 시도: ${videos.length}개 (채널: ${channelId})`);
     
-    // 기존 비디오 캐시 삭제 (채널별)
+    // 기존 비디오 캐시 삭제 (채널별) - 외래키 제약조건 때문에 요약부터 삭제
+    await query(`
+      DELETE FROM youtube_video_summaries 
+      WHERE video_id IN (
+        SELECT video_id FROM youtube_videos WHERE channel_id = $1
+      )
+    `, [channelId]);
+    
     const deleteResult = await query(`DELETE FROM youtube_videos WHERE channel_id = $1`, [channelId]);
     console.log(`기존 비디오 삭제됨: ${deleteResult.rows.length}개`);
 

@@ -1,3 +1,126 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom Component Utilities */
+@layer components {
+  /* Button Components */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-semibold transition-all duration-200 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-offset-2;
+  }
+
+  .btn-primary {
+    @apply btn bg-gradient-to-r from-primary-500 to-primary-600 text-white shadow-lg hover:from-primary-600 hover:to-primary-700 hover:shadow-xl hover:-translate-y-0.5 focus:ring-primary-500;
+  }
+
+  .btn-secondary {
+    @apply btn bg-gradient-to-r from-secondary-500 to-secondary-600 text-white shadow-lg hover:from-secondary-600 hover:to-secondary-700 hover:shadow-xl hover:-translate-y-0.5 focus:ring-secondary-500;
+  }
+
+  .btn-outline {
+    @apply btn border-2 border-primary-200 text-primary-700 bg-white hover:border-primary-300 hover:bg-primary-50 hover:shadow-md focus:ring-primary-500;
+  }
+
+  .btn-ghost {
+    @apply btn text-neutral-700 hover:bg-neutral-100 hover:text-neutral-900 focus:ring-neutral-500;
+  }
+
+  /* Card Components */
+  .card {
+    @apply bg-white rounded-2xl shadow-sm border border-neutral-200 overflow-hidden transition-all duration-300;
+  }
+
+  .card-hover {
+    @apply card hover:shadow-xl hover:-translate-y-1 hover:border-primary-200;
+  }
+
+  .card-glass {
+    @apply backdrop-blur-xl bg-white/80 border-white/20 shadow-glass;
+  }
+
+  /* Input Components */
+  .input {
+    @apply w-full px-4 py-3 text-sm border border-neutral-200 rounded-lg bg-white placeholder-neutral-400 transition-colors focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none disabled:bg-neutral-50 disabled:text-neutral-400;
+  }
+
+  .input-error {
+    @apply input border-red-300 focus:border-red-500 focus:ring-red-500/20;
+  }
+
+  /* Text Utilities */
+  .text-gradient-primary {
+    @apply bg-gradient-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent;
+  }
+
+  .text-gradient-secondary {
+    @apply bg-gradient-to-r from-secondary-500 to-secondary-700 bg-clip-text text-transparent;
+  }
+
+  /* Layout Components */
+  .container-padding {
+    @apply px-4 sm:px-6 lg:px-8;
+  }
+
+  .page-header {
+    @apply mb-8 text-center;
+  }
+
+  .section-spacing {
+    @apply py-16 lg:py-24;
+  }
+
+  /* Navigation */
+  .nav-link {
+    @apply inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-neutral-600 rounded-lg transition-all hover:text-neutral-900 hover:bg-neutral-100 focus:outline-none focus:ring-2 focus:ring-neutral-500/20;
+  }
+
+  .nav-link-active {
+    @apply nav-link text-primary-700 bg-primary-50 hover:bg-primary-100;
+  }
+
+  /* Form Components */
+  .form-group {
+    @apply space-y-2;
+  }
+
+  .form-label {
+    @apply block text-sm font-semibold text-neutral-700;
+  }
+
+  .form-error {
+    @apply text-sm text-red-600;
+  }
+
+  .form-helper {
+    @apply text-sm text-neutral-500;
+  }
+}
+
+@layer utilities {
+  /* Custom Utilities */
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .bg-gradient-radial {
+    background: radial-gradient(var(--tw-gradient-stops));
+  }
+
+  .bg-dot-pattern {
+    background-image: radial-gradient(circle, #e5e7eb 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 /* SUIT 폰트 정의 */
 @font-face {
     font-family: 'Suit';
@@ -62,16 +185,37 @@
     font-display: swap;
 }
 
-/* Pretendard 폰트 정의 (호환성 유지) */
-@font-face { font-family: 'Pretendard-Thin'; src: local('Pretendard Thin'); font-weight: 100; font-style: normal; }
-@font-face { font-family: 'Pretendard-ExtraLight'; src: local('Pretendard ExtraLight'); font-weight: 200; font-style: normal; }
-@font-face { font-family: 'Pretendard-Light'; src: local('Pretendard Light'); font-weight: 300; font-style: normal; }
-@font-face { font-family: 'Pretendard-Regular'; src: local('Pretendard Regular'); font-weight: 400; font-style: normal; }
-@font-face { font-family: 'Pretendard-Medium'; src: local('Pretendard Medium'); font-weight: 500; font-style: normal; }
-@font-face { font-family: 'Pretendard-SemiBold'; src: local('Pretendard SemiBold'); font-weight: 600; font-style: normal; }
-@font-face { font-family: 'Pretendard-Bold'; src: local('Pretendard Bold'); font-weight: 700; font-style: normal; }
-@font-face { font-family: 'Pretendard-ExtraBold'; src: local('Pretendard ExtraBold'); font-weight: 800; font-style: normal; }
-@font-face { font-family: 'Pretendard-Black'; src: local('Pretendard Black'); font-weight: 900; font-style: normal; }
+/* Pretendard 폰트 정의 */
+.pretendard-thin { font-family: 'Pretendard', sans-serif; font-weight: 100; }
+.pretendard-extralight { font-family: 'Pretendard', sans-serif; font-weight: 200; }
+.pretendard-light { font-family: 'Pretendard', sans-serif; font-weight: 300; }
+.pretendard-regular { font-family: 'Pretendard', sans-serif; font-weight: 400; }
+.pretendard-medium { font-family: 'Pretendard', sans-serif; font-weight: 500; }
+.pretendard-semibold { font-family: 'Pretendard', sans-serif; font-weight: 600; }
+.pretendard-bold { font-family: 'Pretendard', sans-serif; font-weight: 700; }
+.pretendard-extrabold { font-family: 'Pretendard', sans-serif; font-weight: 800; }
+.pretendard-black { font-family: 'Pretendard', sans-serif; font-weight: 900; }
+
+/* 기존 호환성을 위한 별칭 */
+.Pretendard-Thin { font-family: 'Pretendard', sans-serif; font-weight: 100; }
+.Pretendard-ExtraLight { font-family: 'Pretendard', sans-serif; font-weight: 200; }
+.Pretendard-Light { font-family: 'Pretendard', sans-serif; font-weight: 300; }
+.Pretendard-Regular { font-family: 'Pretendard', sans-serif; font-weight: 400; }
+.Pretendard-Medium { font-family: 'Pretendard', sans-serif; font-weight: 500; }
+.Pretendard-SemiBold { font-family: 'Pretendard', sans-serif; font-weight: 600; }
+.Pretendard-Bold { font-family: 'Pretendard', sans-serif; font-weight: 700; }
+.Pretendard-ExtraBold { font-family: 'Pretendard', sans-serif; font-weight: 800; }
+.Pretendard-Black { font-family: 'Pretendard', sans-serif; font-weight: 900; }
+
+/* Professional Design System - Clean & Modern */
+
+/* Additional utility classes for specific needs */
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
 
 /* 구글 폰트 클래스 */
 .black-han-sans-regular { font-family: "Black Han Sans", sans-serif; font-weight: 400; font-style: normal; }
@@ -80,14 +224,16 @@
 html, body { 
   margin: 0; 
   padding: 0; 
-  background: #000; 
-  color: #eee; 
-  font-family: "Suit", "IBM Plex Sans KR", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  background: #0a0a0a; 
+  color: #ffffff; 
+  font-family: 'Pretendard', 'Rajdhani', 'Suit', "IBM Plex Sans KR", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
   /* 성능 최적화 */
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+  position: relative;
 }
 
 * { 
@@ -216,7 +362,7 @@ body {
 ::-webkit-scrollbar-thumb { background: #333; border-radius: 999px; }
 
 /* 컨테이너 유틸 */
-.container { max-width: 1280px; margin: 0 auto; padding: 0 20px; }
+.container { max-width: 95vw; margin: 0 auto; padding: 0 20px; }
 
 /* 반응형 유틸리티 */
 @media (max-width: 1024px) {
@@ -231,10 +377,19 @@ body {
   }
 }
 
+@media (max-width: 1024px) {
+  .container {
+    max-width: 96vw;
+    padding: 0 15px;
+  }
+}
+
 @media (max-width: 768px) {
   .container {
-    padding: 0 16px;
+    max-width: 98vw;
+    padding: 0 10px;
   }
+}
   .hero {
     height: 200px;
   }
@@ -242,7 +397,7 @@ body {
     position: static;
     width: 100%;
   }
-}
+
 
 /* 카드 호버 효과 */
 .card-hover { transition: transform .25s ease, box-shadow .25s ease; }
@@ -495,4 +650,81 @@ body {
   .auth-title { font-size: 24px; }
   .register-title { font-size: 26px; }
   .requirements { grid-template-columns: 1fr; }
+}
+
+/* Cyberpunk Responsive Design */
+@media (max-width: 1200px) {
+  .cyber-btn {
+    padding: 10px 24px;
+    font-size: 14px;
+  }
+  
+  .grid-bg {
+    background-size: 60px 60px;
+  }
+}
+
+@media (max-width: 768px) {
+  .cyber-btn {
+    padding: 8px 16px !important;
+    font-size: 12px !important;
+  }
+  
+  .shape-circle {
+    width: 200px;
+    height: 200px;
+    top: 5%;
+    left: 5%;
+  }
+  
+  .shape-triangle {
+    border-left: 60px solid transparent;
+    border-right: 60px solid transparent;
+    border-bottom: 104px solid rgba(0, 178, 255, 0.2);
+    top: 70%;
+    right: 10%;
+  }
+  
+  .shape-square {
+    width: 100px;
+    height: 100px;
+    bottom: 15%;
+    left: 15%;
+  }
+  
+  .grid-bg {
+    background-size: 40px 40px;
+  }
+
+  .cyber-card {
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+
+  .glitch-text {
+    font-size: clamp(1.5rem, 6vw, 2.5rem) !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .cyber-btn {
+    padding: 6px 12px !important;
+    font-size: 11px !important;
+  }
+  
+  .shape-circle,
+  .shape-triangle,
+  .shape-square {
+    opacity: 0.05;
+  }
+  
+  .cyber-card {
+    padding: 8px 10px;
+    font-size: 11px;
+    min-width: 100px;
+  }
+
+  .glitch-text {
+    font-size: clamp(1.2rem, 5vw, 2rem) !important;
+  }
 }

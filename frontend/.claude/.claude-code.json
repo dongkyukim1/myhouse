@@ -1,0 +1,10 @@
+{
+  "agent_name": "housing_service_agent",
+  "description": "청약 공고 모니터링 웹서비스 전문 개발 에이전트",
+  "capabilities": [
+    "fullstack_development",
+    "ui_ux_design", 
+    "data_scraping",
+    "database_design"
+  ]
+}

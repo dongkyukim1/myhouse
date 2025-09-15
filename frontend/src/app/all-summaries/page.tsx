@@ -236,7 +236,7 @@ export default function AllSummariesPage() {
     <AuthGuard>
       <main style={{ 
       padding: "20px", 
-      maxWidth: "1400px", 
+      maxWidth: "95vw", 
       margin: "0 auto",
       fontFamily: "Pretendard-Regular"
     }}>

@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { Play, Info } from "lucide-react";
 
 type Props = {
   title?: string;
@@ -13,55 +14,82 @@ type Props = {
 
 export default function Hero({ title, description, backgroundUrl, onPlay, videoId, playing }: Props) {
   return (
-    <section id="hero-top" style={{ position: "relative", height: 420, borderRadius: 12, overflow: "hidden", marginBottom: 24 }}>
-      {/* 재생 중이면 인라인 플레이어 */}
+    <section className="relative h-[420px] lg:h-[480px] rounded-2xl overflow-hidden mb-8 group">
+      {/* Video Player when playing */}
       {playing && videoId ? (
-        <div style={{ position: "absolute", inset: 0 }}>
+        <div className="absolute inset-0 rounded-2xl overflow-hidden">
           <iframe
-            src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&rel=0`}
+            src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&rel=0&origin=${typeof window !== 'undefined' ? window.location.origin : ''}&modestbranding=1&showinfo=0`}
             title={title}
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             allowFullScreen
-            style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", border: 0 }}
+            referrerPolicy="strict-origin-when-cross-origin"
+            className="absolute inset-0 w-full h-full border-0"
           />
         </div>
       ) : (
         <>
-          <div style={{ position: "absolute", inset: 0, background: "#111" }} />
+          {/* Background */}
+          <div className="absolute inset-0 bg-gradient-to-br from-neutral-900 to-neutral-800" />
+
+          {/* Background Image */}
           {backgroundUrl && (
-            <img src={backgroundUrl} alt={title} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", filter: "brightness(0.6)" }} />
+            <img
+              src={backgroundUrl}
+              alt={title || "Hero background"}
+              className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-70 transition-opacity duration-500"
+            />
           )}
-          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(90deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 60%, rgba(0,0,0,0.0) 100%)" }} />
-          <div style={{ position: "absolute", left: 24, bottom: 24, right: 24, maxWidth: 720 }}>
-            <h1 style={{ color: "#fff", fontWeight: 800, fontSize: 32, margin: 0, marginBottom: 8 }}>{title}</h1>
-            <p style={{ color: "#ddd", fontSize: 14, lineHeight: 1.6, margin: 0, marginBottom: 14, maxHeight: 68, overflow: "hidden" }}>{description}</p>
-            <div style={{ display: "flex", gap: 10 }}>
-              <button onClick={onPlay} style={primaryBtn}>▶ 재생</button>
-              <button style={secondaryBtn}>자세히</button>
+
+          {/* Gradient Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
+
+          {/* Content */}
+          <div className="absolute inset-0 flex flex-col justify-end p-6 lg:p-8">
+            <div className="max-w-2xl">
+              {title && (
+                <h1 className="text-white font-bold text-2xl lg:text-4xl mb-3 lg:mb-4 leading-tight">
+                  {title}
+                </h1>
+              )}
+
+              {description && (
+                <p className="text-neutral-200 text-sm lg:text-base leading-relaxed mb-6 line-clamp-3">
+                  {description}
+                </p>
+              )}
+
+              {/* Action Buttons */}
+              <div className="flex flex-col sm:flex-row gap-3">
+                {onPlay && (
+                  <button
+                    onClick={onPlay}
+                    className="btn-primary flex items-center justify-center gap-2 px-6 py-3 text-sm font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200"
+                  >
+                    <Play className="w-4 h-4 fill-current" />
+                    재생
+                  </button>
+                )}
+
+                <button className="btn-outline flex items-center justify-center gap-2 px-6 py-3 text-sm font-semibold rounded-xl border-2 border-white/30 text-white bg-white/10 hover:bg-white/20 hover:border-white/50 transition-all duration-200 backdrop-blur-sm">
+                  <Info className="w-4 h-4" />
+                  자세히 보기
+                </button>
+              </div>
             </div>
           </div>
+
+          {/* Decorative Elements */}
+          <div className="absolute top-6 right-6">
+            <div className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center">
+              <Play className="w-5 h-5 text-white/80 fill-current ml-0.5" />
+            </div>
+          </div>
+
+          {/* Bottom Gradient */}
+          <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-black/60 to-transparent" />
         </>
       )}
     </section>
   );
 }
-
-const primaryBtn: React.CSSProperties = {
-  background: "#e50914",
-  color: "#fff",
-  border: 0,
-  padding: "10px 16px",
-  borderRadius: 8,
-  fontWeight: 700,
-  cursor: "pointer",
-};
-
-const secondaryBtn: React.CSSProperties = {
-  background: "rgba(255,255,255,0.15)",
-  color: "#fff",
-  border: "1px solid rgba(255,255,255,0.25)",
-  padding: "10px 16px",
-  borderRadius: 8,
-  fontWeight: 600,
-  cursor: "pointer",
-};

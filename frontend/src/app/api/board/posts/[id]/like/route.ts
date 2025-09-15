@@ -6,7 +6,7 @@ export const dynamic = 'force-dynamic';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
 
-// 게시글 좋아요/좋아요 취소
+// 게시글 좋아요 토글
 export async function POST(
   request: NextRequest,
   { params }: { params: { id: string } }
@@ -46,23 +46,24 @@ export async function POST(
       [postId, userId]
     );
 
-    let isLiked = false;
-    let likeCount = 0;
-
     if (existingLike.rows.length > 0) {
-      // 좋아요 취소
+      // 좋아요 제거
       await query(
         'DELETE FROM board_post_likes WHERE post_id = $1 AND user_id = $2',
         [postId, userId]
       );
 
-      // 게시글 좋아요 수 감소
+      // 게시글의 좋아요 수 감소
       await query(
         'UPDATE board_posts SET like_count = like_count - 1 WHERE id = $1',
         [postId]
       );
 
-      isLiked = false;
+      return NextResponse.json({
+        success: true,
+        action: 'unliked',
+        message: '좋아요를 취소했습니다.'
+      });
     } else {
       // 좋아요 추가
       await query(
@@ -70,32 +71,21 @@ export async function POST(
         [postId, userId]
       );
 
-      // 게시글 좋아요 수 증가
+      // 게시글의 좋아요 수 증가
       await query(
         'UPDATE board_posts SET like_count = like_count + 1 WHERE id = $1',
         [postId]
       );
 
-      isLiked = true;
+      return NextResponse.json({
+        success: true,
+        action: 'liked',
+        message: '좋아요를 추가했습니다.'
+      });
     }
 
-    // 현재 좋아요 수 조회
-    const countResult = await query(
-      'SELECT like_count FROM board_posts WHERE id = $1',
-      [postId]
-    );
-
-    likeCount = countResult.rows[0].like_count;
-
-    return NextResponse.json({
-      success: true,
-      isLiked,
-      likeCount,
-      message: isLiked ? '좋아요를 눌렀습니다.' : '좋아요를 취소했습니다.'
-    });
-
   } catch (error) {
-    console.error('좋아요 처리 오류:', error);
+    console.error('좋아요 토글 오류:', error);
     return NextResponse.json(
       { error: '좋아요 처리 중 오류가 발생했습니다.' },
       { status: 500 }
@@ -103,7 +93,7 @@ export async function POST(
   }
 }
 
-// 사용자의 좋아요 상태 확인
+// 게시글 좋아요 상태 조회
 export async function GET(
   request: NextRequest,
   { params }: { params: { id: string } }
@@ -111,42 +101,57 @@ export async function GET(
   try {
     const token = request.cookies.get('auth-token')?.value;
     if (!token) {
-      return NextResponse.json({ isLiked: false, likeCount: 0 });
+      return NextResponse.json({
+        success: true,
+        isLiked: false,
+        likeCount: 0
+      });
     }
 
     let decoded: any;
     try {
       decoded = jwt.verify(token, JWT_SECRET);
     } catch (error) {
-      return NextResponse.json({ isLiked: false, likeCount: 0 });
+      return NextResponse.json({
+        success: true,
+        isLiked: false,
+        likeCount: 0
+      });
     }
 
     const userId = decoded.userId;
     const postId = params.id;
 
-    // 좋아요 상태 확인
-    const likeResult = await query(
-      'SELECT id FROM board_post_likes WHERE post_id = $1 AND user_id = $2',
-      [postId, userId]
-    );
+    // 좋아요 상태 및 총 좋아요 수 조회
+    const result = await query(`
+      SELECT 
+        bp.like_count,
+        CASE WHEN bpl.id IS NOT NULL THEN true ELSE false END as is_liked
+      FROM board_posts bp
+      LEFT JOIN board_post_likes bpl ON bp.id = bpl.post_id AND bpl.user_id = $2
+      WHERE bp.id = $1
+    `, [postId, userId]);
 
-    // 총 좋아요 수 조회
-    const countResult = await query(
-      'SELECT like_count FROM board_posts WHERE id = $1',
-      [postId]
-    );
+    if (result.rows.length === 0) {
+      return NextResponse.json(
+        { error: '게시글을 찾을 수 없습니다.' },
+        { status: 404 }
+      );
+    }
 
-    const isLiked = likeResult.rows.length > 0;
-    const likeCount = countResult.rows.length > 0 ? countResult.rows[0].like_count : 0;
+    const { like_count, is_liked } = result.rows[0];
 
     return NextResponse.json({
       success: true,
-      isLiked,
-      likeCount
+      isLiked: is_liked,
+      likeCount: like_count
     });
 
   } catch (error) {
-    console.error('좋아요 상태 확인 오류:', error);
-    return NextResponse.json({ isLiked: false, likeCount: 0 });
+    console.error('좋아요 상태 조회 오류:', error);
+    return NextResponse.json(
+      { error: '좋아요 상태 조회 중 오류가 발생했습니다.' },
+      { status: 500 }
+    );
   }
 }

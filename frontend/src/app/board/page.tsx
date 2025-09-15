@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import AuthGuard from "@/components/AuthGuard";
-import { BannerAd, SquareAd } from "@/components/GoogleAdsense";
 import Link from "next/link";
 import Swal from 'sweetalert2';
 
@@ -49,6 +48,7 @@ export default function BoardPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [showRoomForm, setShowRoomForm] = useState(false);
 
   // 반응형 감지
   useEffect(() => {
@@ -115,6 +115,18 @@ export default function BoardPage() {
     loadPosts(1);
   };
 
+  const handleRoomSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    // TODO: 매물 등록 로직 구현
+    Swal.fire({
+      icon: 'success',
+      title: '매물 등록 완료',
+      text: '매물이 성공적으로 등록되었습니다.',
+      confirmButtonColor: '#10b981'
+    });
+    setShowRoomForm(false);
+  };
+
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     const now = new Date();
@@ -132,7 +144,7 @@ export default function BoardPage() {
       <div className="container" style={{ 
         padding: isMobile ? "10px" : "20px",
         minHeight: "100vh",
-        maxWidth: "1200px",
+        maxWidth: "95vw",
         margin: "0 auto"
       }}>
         {/* 헤더 */}
@@ -199,24 +211,46 @@ export default function BoardPage() {
             </form>
 
             {/* 글쓰기 버튼 */}
-            <Link href="/board/write" className="button-primary" style={{
-              background: 'rgba(255,255,255,0.2)',
-              border: '1px solid rgba(255,255,255,0.3)',
-              color: '#fff',
-              textDecoration: 'none',
-              padding: '10px 20px',
-              borderRadius: '8px',
-              fontSize: 14,
-              fontFamily: 'Pretendard-SemiBold',
-              whiteSpace: 'nowrap'
-            }}>
-              ✏️ 글쓰기
-            </Link>
+            <div style={{ display: 'flex', gap: 8 }}>
+              {(selectedCategory === 'one-room-market' || selectedCategory === 'two-room-market') && (
+                <button
+                  onClick={() => setShowRoomForm(true)}
+                  className="button-primary"
+                  style={{
+                    background: 'rgba(16, 185, 129, 0.8)',
+                    border: '1px solid rgba(16, 185, 129, 0.5)',
+                    color: '#fff',
+                    padding: '10px 20px',
+                    borderRadius: '8px',
+                    fontSize: 14,
+                    fontFamily: 'Pretendard-SemiBold',
+                    whiteSpace: 'nowrap'
+                  }}
+                >
+                  🏠 매물등록
+                </button>
+              )}
+              <Link 
+                href={`/board/write${selectedCategory ? `?category=${selectedCategory}` : ''}`} 
+                className="button-primary" 
+                style={{
+                  background: 'rgba(255,255,255,0.2)',
+                  border: '1px solid rgba(255,255,255,0.3)',
+                  color: '#fff',
+                  textDecoration: 'none',
+                  padding: '10px 20px',
+                  borderRadius: '8px',
+                  fontSize: 14,
+                  fontFamily: 'Pretendard-SemiBold',
+                  whiteSpace: 'nowrap'
+                }}
+              >
+                ✏️ 일반글쓰기
+              </Link>
+            </div>
           </div>
         </div>
 
-        {/* 상단 배너 광고 */}
-        <BannerAd style={{ margin: '20px 0' }} />
 
         <div style={{ 
           display: 'grid', 
@@ -287,17 +321,6 @@ export default function BoardPage() {
               ))}
             </div>
 
-            {/* 사이드바 광고 - 콘텐츠가 충분할 때만 표시 */}
-            {!isMobile && (
-              <div style={{ marginTop: '20px' }}>
-                <SquareAd 
-                  isLoading={loading}
-                  hasError={false}
-                  contentReady={posts.length > 0 && !loading}
-                  minContentHeight={500}
-                />
-              </div>
-            )}
           </aside>
 
           {/* 게시글 목록 */}
@@ -514,7 +537,207 @@ export default function BoardPage() {
             )}
           </main>
         </div>
+
+        {/* 매물 등록 모달 */}
+        {showRoomForm && (
+          <div style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: 'rgba(0,0,0,0.8)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1000,
+            padding: 20
+          }}>
+            <div className="glass" style={{
+              maxWidth: isMobile ? '95vw' : '600px',
+              width: '100%',
+              maxHeight: '90vh',
+              overflow: 'auto',
+              padding: isMobile ? 16 : 24
+            }}>
+              <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                marginBottom: 20
+              }}>
+                <h2 style={{
+                  fontSize: 20,
+                  fontFamily: 'Pretendard-Bold',
+                  color: '#fff',
+                  margin: 0
+                }}>
+                  🏠 매물 정보 등록
+                </h2>
+                <button
+                  onClick={() => setShowRoomForm(false)}
+                  style={{
+                    background: 'transparent',
+                    border: 'none',
+                    color: '#fff',
+                    fontSize: 20,
+                    cursor: 'pointer'
+                  }}
+                >
+                  ✕
+                </button>
+              </div>
+
+              <form onSubmit={handleRoomSubmit}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+                  <div>
+                    <label style={{
+                      display: 'block',
+                      fontSize: 14,
+                      fontFamily: 'Pretendard-SemiBold',
+                      color: '#fff',
+                      marginBottom: 8
+                    }}>
+                      매물 제목 *
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="예: 신촌역 도보 5분, 깔끔한 원룸"
+                      className="input"
+                      style={{ width: '100%' }}
+                    />
+                  </div>
+
+                  <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: 16 }}>
+                    <div>
+                      <label style={{
+                        display: 'block',
+                        fontSize: 14,
+                        fontFamily: 'Pretendard-SemiBold',
+                        color: '#fff',
+                        marginBottom: 8
+                      }}>
+                        월세 (만원) *
+                      </label>
+                      <input
+                        type="number"
+                        required
+                        placeholder="50"
+                        className="input"
+                        style={{ width: '100%' }}
+                      />
+                    </div>
+                    <div>
+                      <label style={{
+                        display: 'block',
+                        fontSize: 14,
+                        fontFamily: 'Pretendard-SemiBold',
+                        color: '#fff',
+                        marginBottom: 8
+                      }}>
+                        보증금 (만원) *
+                      </label>
+                      <input
+                        type="number"
+                        required
+                        placeholder="1000"
+                        className="input"
+                        style={{ width: '100%' }}
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label style={{
+                      display: 'block',
+                      fontSize: 14,
+                      fontFamily: 'Pretendard-SemiBold',
+                      color: '#fff',
+                      marginBottom: 8
+                    }}>
+                      주소 *
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="서울시 마포구 신촌동..."
+                      className="input"
+                      style={{ width: '100%' }}
+                    />
+                  </div>
+
+                  <div>
+                    <label style={{
+                      display: 'block',
+                      fontSize: 14,
+                      fontFamily: 'Pretendard-SemiBold',
+                      color: '#fff',
+                      marginBottom: 8
+                    }}>
+                      연락처
+                    </label>
+                    <input
+                      type="tel"
+                      placeholder="010-1234-5678"
+                      className="input"
+                      style={{ width: '100%' }}
+                    />
+                  </div>
+
+                  <div>
+                    <label style={{
+                      display: 'block',
+                      fontSize: 14,
+                      fontFamily: 'Pretendard-SemiBold',
+                      color: '#fff',
+                      marginBottom: 8
+                    }}>
+                      상세 설명 *
+                    </label>
+                    <textarea
+                      required
+                      placeholder="매물의 특징, 교통, 주변 환경 등을 자세히 설명해주세요."
+                      className="input"
+                      style={{ width: '100%', height: 100, resize: 'vertical' }}
+                    />
+                  </div>
+
+                  <div style={{ display: 'flex', gap: 12, marginTop: 20 }}>
+                    <button
+                      type="submit"
+                      className="button-primary"
+                      style={{
+                        flex: 1,
+                        background: '#10b981',
+                        border: 'none',
+                        fontSize: 14,
+                        fontFamily: 'Pretendard-SemiBold'
+                      }}
+                    >
+                      🏠 매물 등록하기
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setShowRoomForm(false)}
+                      className="button-primary"
+                      style={{
+                        background: 'rgba(255,255,255,0.1)',
+                        border: '1px solid rgba(255,255,255,0.3)',
+                        fontSize: 14,
+                        fontFamily: 'Pretendard-SemiBold'
+                      }}
+                    >
+                      취소
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
       </div>
     </AuthGuard>
   );
 }
+

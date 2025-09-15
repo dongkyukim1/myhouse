@@ -2,7 +2,6 @@
 
 import React, { useEffect, useMemo, useState } from "react";
 import AuthGuard from "@/components/AuthGuard";
-import { BannerAd } from "@/components/GoogleAdsense";
 import Swal from 'sweetalert2';
 
 export default function MyInfoPage() {
@@ -130,11 +129,13 @@ export default function MyInfoPage() {
   return (
     <div className="container" style={{ 
       display: "grid", 
-      gridTemplateColumns: isMobile ? "1fr" : "280px 1fr", 
-      gap: isMobile ? 16 : 20, 
+      gridTemplateColumns: isMobile ? "1fr" : "320px 1fr", 
+      gap: isMobile ? 16 : 24, 
       paddingBottom: 24, 
       minHeight: "100vh",
-      padding: isMobile ? "10px" : "20px"
+      padding: isMobile ? "10px" : "15px",
+      maxWidth: "95vw",
+      margin: "0 auto"
     }}>
       {/* 사이드바 */}
       <aside className="glass sidebar" style={{ 
@@ -181,13 +182,13 @@ export default function MyInfoPage() {
         {/* 히어로 */}
         <section id="profile" className="hero gradient-orange glass" style={{ 
           display: "grid", 
-          gridTemplateColumns: isMobile ? "1fr" : "1.2fr 1fr", 
+          gridTemplateColumns: isMobile ? "1fr" : "1.3fr 1fr", 
           marginBottom: isMobile ? -40 : -60,
           backgroundImage: "url('/background.png')",
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
-          minHeight: isMobile ? "300px" : "420px"
+          minHeight: isMobile ? "300px" : "380px"
         }}>
           <div style={{ position: "relative" }}>
             <div className="hero-mask" />
@@ -203,12 +204,12 @@ export default function MyInfoPage() {
           <div style={{ padding: 12 }}>
             <div className="glass" style={{ padding: 12, height: "100%" }}>
               <div style={{ fontWeight: 800, marginBottom: 6, fontFamily: 'Pretendard-Bold', fontSize: 14 }}>내 청약 지표</div>
-              <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr 1fr" : "1fr 1fr 1fr", gap: 6, marginBottom: 8 }}>
+              <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr 1fr" : "repeat(3, 1fr)", gap: 8, marginBottom: 10 }}>
                 <Metric title="업로드 파일" value={String(totalFiles)} trend="↑" color="#22c55e" />
                 <Metric title="청약 가점" value={elig?.score ? String(elig.score) : "-"} trend={elig?.score >= 50 ? "🎯" : "📈"} color={elig?.score >= 50 ? "#22c55e" : "#eab308"} />
                 <Metric title="납입 횟수" value={elig?.deposits ? `${elig.deposits}회` : "-"} trend={elig?.deposits >= 24 ? "✨" : "⏳"} color={elig?.deposits >= 24 ? "#22c55e" : "#3b82f6"} />
               </div>
-              <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr 1fr" : "1fr 1fr 1fr", gap: 6 }}>
+              <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr 1fr" : "repeat(3, 1fr)", gap: 8 }}>
                 <Metric title="저장 용량" value={getTotalFileSize()} trend="💾" color="#8b5cf6" />
                 <Metric title="준비도" value={getPreparationLevel()} trend="📊" color="#f59e0b" />
                 <Metric title="최근 활동" value={getLastActivity()} trend="⏰" color="#06b6d4" />
@@ -224,8 +225,8 @@ export default function MyInfoPage() {
           </div>
           <form onSubmit={handleSubmit} style={{ 
             display: "grid", 
-            gridTemplateColumns: isMobile ? "1fr" : "1fr 1.5fr auto", 
-            gap: isMobile ? 12 : 8, 
+            gridTemplateColumns: isMobile ? "1fr" : "1fr 2fr auto", 
+            gap: isMobile ? 12 : 12, 
             alignItems:'center' 
           }}>
             <input className="input" placeholder="이름(기본=파일명)" name="name" value={name} onChange={(e)=>setName(e.target.value)} required />
@@ -243,8 +244,9 @@ export default function MyInfoPage() {
 
         {/* 최근 리스트 */}
         <section id="list" className="grid-gap" style={{ 
-          gridTemplateColumns: isMobile ? "1fr" : "repeat(auto-fit, minmax(320px, 1fr))", 
-          gap: isMobile ? 12 : 16 
+          display: "grid",
+          gridTemplateColumns: isMobile ? "1fr" : "repeat(auto-fit, minmax(280px, 1fr))", 
+          gap: isMobile ? 12 : 20
         }}>
           {items.slice(0,6).map((it) => (
             <FileCard key={it.id} file={it} isMobile={isMobile} />

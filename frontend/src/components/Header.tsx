@@ -42,24 +42,31 @@ export default function Header() {
     textDecoration: "none",
     padding: "8px 16px",
     borderRadius: "8px",
-    transition: "all 0.2s ease",
+    transition: "all 0.3s ease",
     fontFamily: "Pretendard-Medium",
-    fontSize: "14px",
+    fontSize: "16px",
     whiteSpace: "nowrap" as const,
     display: "flex",
     alignItems: "center",
-    gap: "6px"
+    gap: "6px",
+    border: "1px solid transparent",
+    position: "relative" as const,
+    overflow: "hidden" as const
   };
 
   const handleNavHover = (e: React.MouseEvent<HTMLAnchorElement>, isEnter: boolean) => {
     if (isEnter) {
       e.currentTarget.style.color = "#ffffff";
-      e.currentTarget.style.background = "rgba(255, 255, 255, 0.1)";
+      e.currentTarget.style.background = "rgba(255, 94, 0, 0.1)";
+      e.currentTarget.style.borderColor = "rgba(255, 94, 0, 0.3)";
       e.currentTarget.style.transform = "translateY(-1px)";
+      e.currentTarget.style.boxShadow = "0 0 20px rgba(255, 94, 0, 0.3)";
     } else {
       e.currentTarget.style.color = "#d1d5db";
       e.currentTarget.style.background = "transparent";
+      e.currentTarget.style.borderColor = "transparent";
       e.currentTarget.style.transform = "translateY(0)";
+      e.currentTarget.style.boxShadow = "none";
     }
   };
 
@@ -69,37 +76,32 @@ export default function Header() {
         position: "sticky",
         top: 0,
         zIndex: 50,
-        backgroundColor: "rgba(0, 0, 0, 0.92)",
-        backdropFilter: "blur(12px)",
-        borderBottom: "1px solid rgba(255, 255, 255, 0.08)",
-        boxShadow: "0 4px 20px rgba(0, 0, 0, 0.15)"
+        backgroundColor: "rgba(10, 10, 10, 0.95)",
+        backdropFilter: "blur(15px)",
+        borderBottom: "1px solid rgba(255, 94, 0, 0.2)",
+        boxShadow: "0 4px 30px rgba(0, 0, 0, 0.3), 0 0 50px rgba(255, 94, 0, 0.1)"
       }}
     >
       <div 
         style={{
-          maxWidth: "1600px",
+          maxWidth: "2000px",
           margin: "0 auto",
           display: "grid",
-          gridTemplateColumns: "200px 1fr 300px",
+          gridTemplateColumns: "220px 1fr 350px",
           alignItems: "center",
-          padding: "12px 32px",
-          minHeight: "70px",
-          gap: "40px"
+          padding: "16px 40px",
+          minHeight: "85px",
+          gap: "50px"
         }}
       >
         {/* 좌측: 로고 */}
         <Link 
           href="/" 
           style={{
-            fontSize: "26px",
-            fontWeight: "800",
-            background: "linear-gradient(135deg, #ef4444, #f472b6, #a855f7)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            backgroundClip: "text",
-            textDecoration: "none",
-            fontFamily: "Pretendard-Bold",
-            whiteSpace: "nowrap",
+            display: 'flex',
+            alignItems: 'center',
+            gap: '10px',
+            textDecoration: 'none',
             transition: "all 0.3s ease"
           }}
           onMouseEnter={(e) => {
@@ -109,7 +111,43 @@ export default function Header() {
             e.currentTarget.style.transform = "scale(1)";
           }}
         >
-          MyHouse
+          <svg 
+            style={{ width: '40px', height: '40px' }}
+            viewBox="0 0 40 40" 
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <defs>
+              <linearGradient id="headerLogoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style={{stopColor:'#FF5E00', stopOpacity:1}} />
+                <stop offset="100%" style={{stopColor:'#00B2FF', stopOpacity:1}} />
+              </linearGradient>
+            </defs>
+            <polygon 
+              points="20,2 38,14 38,26 20,38 2,26 2,14" 
+              fill="none" 
+              stroke="url(#headerLogoGradient)" 
+              strokeWidth="2"
+            />
+            <polygon 
+              points="20,8 32,16 32,24 20,32 8,24 8,16" 
+              fill="url(#headerLogoGradient)" 
+              opacity="0.3"
+            />
+            <circle cx="20" cy="20" r="3" fill="url(#headerLogoGradient)"/>
+          </svg>
+          <span style={{
+            fontFamily: 'Orbitron, monospace',
+            fontSize: "24px",
+            fontWeight: "900",
+            background: "linear-gradient(45deg, #FF5E00, #00B2FF)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            backgroundClip: "text",
+            whiteSpace: "nowrap",
+            textShadow: '0 0 20px rgba(255, 94, 0, 0.5)'
+          }}>
+            MYHOUSE
+          </span>
         </Link>
 
         {/* 중앙: 네비게이션 */}
@@ -118,7 +156,7 @@ export default function Header() {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            gap: "4px",
+            gap: "6px",
             overflowX: "auto",
             scrollbarWidth: "none",
             msOverflowStyle: "none",
@@ -131,7 +169,7 @@ export default function Header() {
             onMouseEnter={(e) => handleNavHover(e, true)}
             onMouseLeave={(e) => handleNavHover(e, false)}
           >
-            <Home size={16}/> 홈
+            <Home size={18}/> 홈
           </Link>
           <Link 
             href="/my-info" 
@@ -155,7 +193,23 @@ export default function Header() {
             onMouseEnter={(e) => handleNavHover(e, true)}
             onMouseLeave={(e) => handleNavHover(e, false)}
           >
-            예상 지출
+            🧮 대출계산기
+          </Link>
+          <Link 
+            href="/calendar" 
+            style={navLinkStyle}
+            onMouseEnter={(e) => handleNavHover(e, true)}
+            onMouseLeave={(e) => handleNavHover(e, false)}
+          >
+            📅 청약일정
+          </Link>
+          <Link 
+            href="/documents" 
+            style={navLinkStyle}
+            onMouseEnter={(e) => handleNavHover(e, true)}
+            onMouseLeave={(e) => handleNavHover(e, false)}
+          >
+            📄 서류체크
           </Link>
           <Link 
             href="/all-summaries" 
@@ -163,36 +217,41 @@ export default function Header() {
             onMouseEnter={(e) => handleNavHover(e, true)}
             onMouseLeave={(e) => handleNavHover(e, false)}
           >
-            전체 요약
+            📺 전체 요약
           </Link>
           <Link 
             href="/openbanking" 
             style={{
               ...navLinkStyle,
-              background: "linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%)",
-              border: "1px solid rgba(102, 126, 234, 0.4)",
-              color: "#a5b4fc"
+              background: "linear-gradient(135deg, rgba(255, 94, 0, 0.1) 0%, rgba(0, 178, 255, 0.1) 100%)",
+              border: "1px solid rgba(255, 94, 0, 0.3)",
+              color: "#FF5E00",
+              boxShadow: "0 0 15px rgba(255, 94, 0, 0.2)"
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.background = "linear-gradient(135deg, rgba(102, 126, 234, 0.3) 0%, rgba(118, 75, 162, 0.3) 100%)";
+              e.currentTarget.style.background = "linear-gradient(135deg, rgba(255, 94, 0, 0.2) 0%, rgba(0, 178, 255, 0.2) 100%)";
               e.currentTarget.style.color = "#ffffff";
+              e.currentTarget.style.borderColor = "#FF5E00";
               e.currentTarget.style.transform = "translateY(-1px)";
+              e.currentTarget.style.boxShadow = "0 0 25px rgba(255, 94, 0, 0.4)";
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.background = "linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%)";
-              e.currentTarget.style.color = "#a5b4fc";
+              e.currentTarget.style.background = "linear-gradient(135deg, rgba(255, 94, 0, 0.1) 0%, rgba(0, 178, 255, 0.1) 100%)";
+              e.currentTarget.style.color = "#FF5E00";
+              e.currentTarget.style.borderColor = "rgba(255, 94, 0, 0.3)";
               e.currentTarget.style.transform = "translateY(0)";
+              e.currentTarget.style.boxShadow = "0 0 15px rgba(255, 94, 0, 0.2)";
             }}
           >
             🏦 오픈뱅킹
           </Link>
           <Link 
-            href="/stocks" 
+            href="/real-estate-stats" 
             style={navLinkStyle}
             onMouseEnter={(e) => handleNavHover(e, true)}
             onMouseLeave={(e) => handleNavHover(e, false)}
           >
-            📈 주식
+            📊 부동산통계
           </Link>
           <Link 
             href="/board" 
@@ -220,9 +279,9 @@ export default function Header() {
                 display: "flex",
                 alignItems: "center",
                 gap: "12px",
-                fontSize: "13px",
+                fontSize: "15px",
                 color: "#d1d5db",
-                borderLeft: "1px solid rgba(255, 255, 255, 0.1)",
+                borderLeft: "1px solid rgba(255, 94, 0, 0.2)",
                 paddingLeft: "16px"
               }}
             >
@@ -232,7 +291,8 @@ export default function Header() {
               }}>
                 안녕하세요, <span style={{ 
                   fontFamily: "Pretendard-SemiBold",
-                  color: "#f472b6"
+                  color: "#FF5E00",
+                  textShadow: "0 0 10px rgba(255, 94, 0, 0.5)"
                 }}>{user.name}</span>님!
               </span>
               <button
@@ -243,12 +303,12 @@ export default function Header() {
                   gap: "6px",
                   padding: "6px 12px",
                   borderRadius: "6px",
-                  border: "1px solid rgba(255, 255, 255, 0.2)",
+                  border: "1px solid rgba(255, 94, 0, 0.3)",
                   color: "#d1d5db",
-                  fontSize: "12px",
+                  fontSize: "14px",
                   backgroundColor: "transparent",
                   cursor: "pointer",
-                  transition: "all 0.2s ease",
+                  transition: "all 0.3s ease",
                   fontFamily: "Pretendard-Medium",
                   whiteSpace: "nowrap"
                 }}
@@ -256,14 +316,16 @@ export default function Header() {
                   e.currentTarget.style.backgroundColor = "rgba(239, 68, 68, 0.1)";
                   e.currentTarget.style.borderColor = "#ef4444";
                   e.currentTarget.style.color = "#ef4444";
+                  e.currentTarget.style.boxShadow = "0 0 15px rgba(239, 68, 68, 0.3)";
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.backgroundColor = "transparent";
-                  e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.2)";
+                  e.currentTarget.style.borderColor = "rgba(255, 94, 0, 0.3)";
                   e.currentTarget.style.color = "#d1d5db";
+                  e.currentTarget.style.boxShadow = "none";
                 }}
               >
-                <LogOut size={14}/> 로그아웃
+                <LogOut size={16}/> 로그아웃
               </button>
             </div>
           )}
@@ -280,26 +342,30 @@ export default function Header() {
               href="https://apply.lh.or.kr/lhapply/apply/main.do?mi=1021"
               target="_blank"
               rel="noreferrer"
+              className="cyber-btn"
               style={{
-                padding: "8px 16px",
-                borderRadius: "24px",
+                padding: "10px 18px",
+                borderRadius: "6px",
                 background: "linear-gradient(135deg, #10b981, #3b82f6)",
                 color: "#ffffff",
-                fontSize: "13px",
+                fontSize: "14px",
                 fontWeight: "600",
                 textDecoration: "none",
-                boxShadow: "0 3px 12px rgba(16, 185, 129, 0.3)",
+                boxShadow: "0 0 20px rgba(16, 185, 129, 0.3)",
                 transition: "all 0.3s ease",
                 fontFamily: "Pretendard-SemiBold",
-                whiteSpace: "nowrap"
+                whiteSpace: "nowrap",
+                border: "1px solid rgba(16, 185, 129, 0.3)"
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = "translateY(-2px) scale(1.02)";
-                e.currentTarget.style.boxShadow = "0 6px 20px rgba(16, 185, 129, 0.4)";
+                e.currentTarget.style.boxShadow = "0 0 30px rgba(16, 185, 129, 0.5)";
+                e.currentTarget.style.borderColor = "#10b981";
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.transform = "translateY(0) scale(1)";
-                e.currentTarget.style.boxShadow = "0 3px 12px rgba(16, 185, 129, 0.3)";
+                e.currentTarget.style.boxShadow = "0 0 20px rgba(16, 185, 129, 0.3)";
+                e.currentTarget.style.borderColor = "rgba(16, 185, 129, 0.3)";
               }}
             >
               ＋ LH 청약
@@ -308,26 +374,30 @@ export default function Header() {
               href="https://www.i-sh.co.kr/app/index.do"
               target="_blank"
               rel="noreferrer"
+              className="cyber-btn"
               style={{
-                padding: "8px 16px",
-                borderRadius: "24px",
+                padding: "10px 18px",
+                borderRadius: "6px",
                 background: "linear-gradient(135deg, #34d399, #059669)",
                 color: "#ffffff",
-                fontSize: "13px",
+                fontSize: "14px",
                 fontWeight: "600",
                 textDecoration: "none",
-                boxShadow: "0 3px 12px rgba(52, 211, 153, 0.3)",
+                boxShadow: "0 0 20px rgba(52, 211, 153, 0.3)",
                 transition: "all 0.3s ease",
                 fontFamily: "Pretendard-SemiBold",
-                whiteSpace: "nowrap"
+                whiteSpace: "nowrap",
+                border: "1px solid rgba(52, 211, 153, 0.3)"
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = "translateY(-2px) scale(1.02)";
-                e.currentTarget.style.boxShadow = "0 6px 20px rgba(52, 211, 153, 0.4)";
+                e.currentTarget.style.boxShadow = "0 0 30px rgba(52, 211, 153, 0.5)";
+                e.currentTarget.style.borderColor = "#34d399";
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.transform = "translateY(0) scale(1)";
-                e.currentTarget.style.boxShadow = "0 3px 12px rgba(52, 211, 153, 0.3)";
+                e.currentTarget.style.boxShadow = "0 0 20px rgba(52, 211, 153, 0.3)";
+                e.currentTarget.style.borderColor = "rgba(52, 211, 153, 0.3)";
               }}
             >
               🏠 SH 청약
@@ -346,11 +416,19 @@ export default function Header() {
           -ms-overflow-style: none;
         }
         
+        @media (max-width: 1400px) {
+          .header-container {
+            grid-template-columns: 200px 1fr 300px;
+            gap: 30px;
+            padding: 14px 30px;
+          }
+        }
+        
         @media (max-width: 1200px) {
           .header-container {
-            grid-template-columns: 180px 1fr 250px;
+            grid-template-columns: 180px 1fr 280px;
             gap: 24px;
-            padding: 10px 24px;
+            padding: 12px 24px;
           }
         }
         

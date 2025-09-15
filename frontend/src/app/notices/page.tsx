@@ -110,9 +110,9 @@ export default function NoticesPage() {
 
   return (
       <div className="container" style={{ 
-        maxWidth: 1200, 
+        maxWidth: "95vw", 
         margin: "0 auto", 
-        padding: isMobile ? "12px" : "20px"
+        padding: isMobile ? "10px" : "20px"
       }}>
       {/* 헤더 섹션 */}
       <section className="hero gradient-blue glass" style={{ 
@@ -178,22 +178,22 @@ export default function NoticesPage() {
 
       {/* 필터 및 검색 */}
       <section className="glass" style={{ 
-        padding: isMobile ? 12 : 16, 
+        padding: isMobile ? 12 : 20, 
         marginBottom: isMobile ? 16 : 24, 
         borderRadius: 12
       }}>
         {/* 상단 필터 */}
         <div style={{
           display: "grid",
-          gridTemplateColumns: isMobile ? "1fr" : "repeat(auto-fit, minmax(200px, 1fr))",
-          gap: 12,
-          alignItems: "center",
-          marginBottom: 16
+          gridTemplateColumns: isMobile ? "1fr" : "200px 1fr 150px",
+          gap: isMobile ? 12 : 16,
+          alignItems: "end",
+          marginBottom: 20
         }}>
           <div>
             <label style={{ 
               display: "block", 
-              marginBottom: 4, 
+              marginBottom: 6, 
               fontSize: 14, 
               fontFamily: "Pretendard-Medium",
               color: "#ddd" 
@@ -215,7 +215,7 @@ export default function NoticesPage() {
           <div>
             <label style={{ 
               display: "block", 
-              marginBottom: 4, 
+              marginBottom: 6, 
               fontSize: 14, 
               fontFamily: "Pretendard-Medium",
               color: "#ddd" 
@@ -231,13 +231,35 @@ export default function NoticesPage() {
               style={{ fontFamily: "Pretendard-Regular" }}
             />
           </div>
+
+          <button 
+            onClick={() => {
+              setSelectedSource("all");
+              setSelectedRegion("all");
+              setSearchTerm("");
+            }}
+            style={{
+              padding: "8px 16px",
+              borderRadius: 8,
+              border: "1px solid rgba(255,255,255,0.2)",
+              background: "rgba(239, 68, 68, 0.1)",
+              color: "#ef4444",
+              fontSize: 13,
+              fontFamily: "Pretendard-Medium",
+              cursor: "pointer",
+              transition: "all 0.2s ease",
+              height: "fit-content"
+            }}
+          >
+            🔄 초기화
+          </button>
         </div>
 
         {/* 지역별 탭 */}
         <div>
           <label style={{ 
             display: "block", 
-            marginBottom: 8, 
+            marginBottom: 12, 
             fontSize: 14, 
             fontFamily: "Pretendard-Medium",
             color: "#ddd" 
@@ -245,10 +267,10 @@ export default function NoticesPage() {
             지역별 보기
           </label>
           <div style={{
-            display: "flex",
-            gap: 8,
-            flexWrap: "wrap",
-            alignItems: "center"
+            display: "grid",
+            gridTemplateColumns: isMobile ? "repeat(auto-fit, minmax(80px, 1fr))" : "repeat(auto-fill, minmax(100px, 1fr))",
+            gap: isMobile ? 6 : 8,
+            maxWidth: isMobile ? "100%" : "800px"
           }}>
             <button
               onClick={() => setSelectedRegion("all")}
@@ -333,8 +355,10 @@ export default function NoticesPage() {
         </div>
       ) : (
         <div className="grid-gap" style={{ 
-          gridTemplateColumns: isMobile ? "1fr" : "repeat(auto-fill, minmax(350px, 1fr))",
-          gap: isMobile ? 12 : 16 
+          display: "grid",
+          gridTemplateColumns: isMobile ? "1fr" : "repeat(auto-fit, minmax(320px, 1fr))",
+          gap: isMobile ? 12 : 20,
+          maxWidth: "100%"
         }}>
           {filteredNotices.map((notice, index) => {
             const href = getNoticeHref(notice);

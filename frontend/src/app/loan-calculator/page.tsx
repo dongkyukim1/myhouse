@@ -8,6 +8,7 @@ export default function LoanCalculatorPage() {
   const [interestRate, setInterestRate] = useState<number>(4.5); // 연이율 (%)
   const [loanTerm, setLoanTerm] = useState<number>(30); // 대출기간 (년)
   const [isGraceType, setIsGraceType] = useState<boolean>(false); // 거치식 여부
+  const [loanType, setLoanType] = useState<string>("general"); // 대출 유형
   
   const [monthlyPayment, setMonthlyPayment] = useState<number>(0);
   const [totalPayment, setTotalPayment] = useState<number>(0);
@@ -18,6 +19,23 @@ export default function LoanCalculatorPage() {
   const [ocrLoading, setOcrLoading] = useState(false);
   const [ocrResult, setOcrResult] = useState<any>(null);
   const [ocrError, setOcrError] = useState<string | null>(null);
+
+  // 대출 유형별 추천 이자율 설정
+  const loanTypeOptions = [
+    { value: "general", name: "일반 주택담보대출", rate: 4.5, description: "일반 주택 구매용" },
+    { value: "first-home", name: "생애최초 주택구입자금대출", rate: 3.2, description: "생애최초 구매자 우대" },
+    { value: "interim", name: "중도금 대출", rate: 5.2, description: "신축 분양 중도금" },
+    { value: "dti", name: "DTI 우대대출", rate: 3.8, description: "DTI 기준 충족시" },
+    { value: "public", name: "공공임대 보증금 대출", rate: 2.9, description: "국민임대, 행복주택 등" }
+  ];
+
+  // 대출 유형 변경시 추천 이자율 자동 설정
+  useEffect(() => {
+    const selectedType = loanTypeOptions.find(type => type.value === loanType);
+    if (selectedType) {
+      setInterestRate(selectedType.rate);
+    }
+  }, [loanType]);
 
   // 월 상환액 계산
   useEffect(() => {
@@ -84,12 +102,11 @@ export default function LoanCalculatorPage() {
 
   return (
     <AuthGuard>
-      <div className="container loan-calculator-grid" style={{ 
-      display: "grid", 
-      gridTemplateColumns: "1fr 400px", 
-      gap: 20, 
-      paddingBottom: 24 
-    }}>
+      <div className="loan-calculator-layout" style={{ 
+        padding: "20px 16px 24px", 
+        maxWidth: "95vw",
+        margin: "0 auto"
+      }}>
       {/* 메인 컨텐츠 */}
       <main style={{ display: 'grid', gap: 14 }}>
         {/* 히어로 섹션 */}
@@ -141,6 +158,28 @@ export default function LoanCalculatorPage() {
           </h2>
           
           <div style={{ display: "grid", gap: 12 }}>
+            {/* 대출 유형 선택 */}
+            <div>
+              <label className="subtle" style={{ display: "block", marginBottom: 6, fontSize: 14 }}>
+                대출 유형
+              </label>
+              <select
+                value={loanType}
+                onChange={(e) => setLoanType(e.target.value)}
+                className="input"
+                style={{ width: "100%" }}
+              >
+                {loanTypeOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.name} ({option.rate}%)
+                  </option>
+                ))}
+              </select>
+              <div style={{ marginTop: 4, fontSize: 12, color: "#8b5cf6" }}>
+                {loanTypeOptions.find(type => type.value === loanType)?.description}
+              </div>
+            </div>
+
             {/* 대출원금 */}
             <div>
               <label className="subtle" style={{ display: "block", marginBottom: 6, fontSize: 14 }}>
@@ -572,6 +611,29 @@ export default function LoanCalculatorPage() {
           </div>
         </div>
       </aside>
+
+      {/* 반응형 CSS */}
+      <style jsx>{`
+        .loan-calculator-layout {
+          display: grid;
+          grid-template-columns: 1fr minmax(350px, 400px);
+          gap: 20px;
+        }
+        
+        @media (max-width: 1024px) {
+          .loan-calculator-layout {
+            grid-template-columns: 1fr 300px;
+            gap: 16px;
+          }
+        }
+        
+        @media (max-width: 768px) {
+          .loan-calculator-layout {
+            grid-template-columns: 1fr;
+            gap: 16px;
+          }
+        }
+      `}</style>
     </div>
     </AuthGuard>
   );
