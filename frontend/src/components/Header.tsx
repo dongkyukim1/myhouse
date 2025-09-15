@@ -220,32 +220,6 @@ export default function Header() {
             📺 전체 요약
           </Link>
           <Link 
-            href="/openbanking" 
-            style={{
-              ...navLinkStyle,
-              background: "linear-gradient(135deg, rgba(255, 94, 0, 0.1) 0%, rgba(0, 178, 255, 0.1) 100%)",
-              border: "1px solid rgba(255, 94, 0, 0.3)",
-              color: "#FF5E00",
-              boxShadow: "0 0 15px rgba(255, 94, 0, 0.2)"
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = "linear-gradient(135deg, rgba(255, 94, 0, 0.2) 0%, rgba(0, 178, 255, 0.2) 100%)";
-              e.currentTarget.style.color = "#ffffff";
-              e.currentTarget.style.borderColor = "#FF5E00";
-              e.currentTarget.style.transform = "translateY(-1px)";
-              e.currentTarget.style.boxShadow = "0 0 25px rgba(255, 94, 0, 0.4)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = "linear-gradient(135deg, rgba(255, 94, 0, 0.1) 0%, rgba(0, 178, 255, 0.1) 100%)";
-              e.currentTarget.style.color = "#FF5E00";
-              e.currentTarget.style.borderColor = "rgba(255, 94, 0, 0.3)";
-              e.currentTarget.style.transform = "translateY(0)";
-              e.currentTarget.style.boxShadow = "0 0 15px rgba(255, 94, 0, 0.2)";
-            }}
-          >
-            🏦 오픈뱅킹
-          </Link>
-          <Link 
             href="/real-estate-stats" 
             style={navLinkStyle}
             onMouseEnter={(e) => handleNavHover(e, true)}

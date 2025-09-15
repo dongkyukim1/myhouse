@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
 import AuthGuard from "@/components/AuthGuard";
 import Swal from 'sweetalert2';
@@ -78,21 +78,7 @@ export default function RoomDetailPage() {
     };
   }, []);
 
-  // 매물 데이터 로드
-  useEffect(() => {
-    if (params.id) {
-      loadRoom();
-    }
-  }, [params.id]);
-
-  // 지도 초기화
-  useEffect(() => {
-    if (mapLoaded && room && room.latitude && room.longitude) {
-      initializeMap();
-    }
-  }, [mapLoaded, room]);
-
-  const loadRoom = async () => {
+  const loadRoom = useCallback(async () => {
     try {
       setLoading(true);
       const response = await fetch(`/api/marketplace/rooms/${params.id}`);
@@ -116,9 +102,9 @@ export default function RoomDetailPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [params.id, router]);
 
-  const initializeMap = () => {
+  const initializeMap = useCallback(() => {
     if (!room || !room.latitude || !room.longitude) return;
 
     const container = document.getElementById('kakao-map');
@@ -153,7 +139,21 @@ export default function RoomDetailPage() {
     window.kakao.maps.event.addListener(marker, 'click', () => {
       infowindow.open(map, marker);
     });
-  };
+  }, [room]);
+
+  // 매물 데이터 로드
+  useEffect(() => {
+    if (params.id) {
+      loadRoom();
+    }
+  }, [params.id, loadRoom]);
+
+  // 지도 초기화
+  useEffect(() => {
+    if (mapLoaded && room && room.latitude && room.longitude) {
+      initializeMap();
+    }
+  }, [mapLoaded, room, initializeMap]);
 
   const formatPrice = (price: number) => {
     if (price >= 10000) {
