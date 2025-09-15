@@ -397,13 +397,8 @@ export default function WritePage() {
 
                 <div style={{ 
                   background: '#fff', 
-                  borderRadius: 8,
-                  '& .ql-editor': {
-                    minHeight: '300px',
-                    fontSize: '14px',
-                    lineHeight: '1.6'
-                  }
-                }}>
+                  borderRadius: 8
+                }} className="quill-editor-container">
                   <ReactQuill
                     theme="snow"
                     value={content}

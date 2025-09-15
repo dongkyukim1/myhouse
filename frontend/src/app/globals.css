@@ -728,3 +728,26 @@ body {
     font-size: clamp(1.2rem, 5vw, 2rem) !important;
   }
 }
+
+/* Quill Editor Styling */
+.quill-editor-container .ql-editor {
+  min-height: 300px;
+  font-size: 14px;
+  line-height: 1.6;
+  font-family: 'Pretendard-Regular', sans-serif;
+  color: #333;
+}
+
+.quill-editor-container .ql-toolbar {
+  border-top: 1px solid #ccc;
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  border-bottom: none;
+}
+
+.quill-editor-container .ql-container {
+  border-bottom: 1px solid #ccc;
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  border-top: none;
+}

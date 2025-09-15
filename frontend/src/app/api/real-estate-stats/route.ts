@@ -27,9 +27,26 @@ interface RealEstateStatsItem {
   V_ORDER: number;       // 출력순서
 }
 
+// 포맷된 데이터 타입 정의
+interface FormattedStatsItem {
+  id: number;
+  parentId: number;
+  name: string;
+  fullName: string;
+  unit: string;
+  order: number;
+  description: string;
+  tableId: string;
+  tag: string;
+}
+
 interface ApiResponse {
   success: boolean;
-  data?: RealEstateStatsItem[];
+  data?: FormattedStatsItem[];
+  regions?: any;
+  total?: number;
+  page?: number;
+  limit?: number;
   error?: string;
   message?: string;
 }
@@ -105,7 +122,7 @@ function processRegionalData(items: RealEstateStatsItem[]) {
 }
 
 // 사용자 친화적 데이터 변환
-function formatStatsData(items: RealEstateStatsItem[]) {
+function formatStatsData(items: RealEstateStatsItem[]): FormattedStatsItem[] {
   return items.map(item => ({
     id: item.ITM_ID,
     parentId: item.PAR_ITM_ID,

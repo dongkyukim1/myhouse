@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getCacheStats, cleanExpiredCache } from "@/lib/youtube-cache";
-import { getAllCacheStats } from "@/lib/cache";
+import { getAllCacheStats, apiCache } from "@/lib/cache";
 import { healthCheck } from "@/lib/db";
 
 export const dynamic = 'force-dynamic';
